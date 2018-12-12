@@ -88,7 +88,7 @@ namespace BattleShip.Network
                                 myCommand = Console.ReadLine();
                                 writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
-                                myCommand = gameCommandHandler.CommandSorter(responseFromServer);
+                                myCommand = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
                                 writer.WriteLine(myCommand);
                                 myTurn = false;
                             }

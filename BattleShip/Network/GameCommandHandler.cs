@@ -26,7 +26,9 @@ namespace BattleShip.Network
             //    Console.WriteLine($"{game.player2.PlayerName} Gameboard");
              
             //    game.player2.GameBoard.PrintCurrentBoardState(game.player2);
-            //}
+            //} 
+
+          
             if (command.ToLower() == "start")
             {
                 return StartGame(game.player1.PlayerName, game.player2.PlayerName);
@@ -43,6 +45,25 @@ namespace BattleShip.Network
                 
             }
             return "";
+        }
+
+        public string ResponseSorter(string response, string coordinates)
+        {
+            var game = GameRunner.Instance();
+            var playerInput = new PlayerInput();
+            var commandStatusCode = response.Split(' ')[0];
+            // TODO: to implement updating of opponent board
+            if (int.TryParse(commandStatusCode, out int statusCode))
+            {
+                if (statusCode > 240 && statusCode < 256)
+                {
+                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                        game.player2);
+                }
+            }
+
+            return "Your turn " + game.player2.PlayerName;
+            
         }
 
        

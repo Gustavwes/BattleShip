@@ -100,7 +100,8 @@ namespace BattleShip.Network
                             writer.WriteLine(responseToSend);
                             responseFromClient = reader.ReadLine(); // Get if its a hit or miss
                             Console.WriteLine(responseFromClient);
-                            gameCommandHandler.CommandSorter(responseFromClient);
+                            gameCommandHandler.ResponseSorter(responseFromClient, responseToSend);
+                            //gameCommandHandler.CommandSorter(responseFromClient);
                             myTurn = false;
 
                         }
@@ -108,7 +109,9 @@ namespace BattleShip.Network
                         {
                             Console.WriteLine("Waiting for opponent move...");
                             responseFromClient = reader.ReadLine();
+
                             responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
+
                             writer.WriteLine(responseToSend);
                             myTurn = true;
                         }
