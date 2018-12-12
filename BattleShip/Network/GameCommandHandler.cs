@@ -52,9 +52,11 @@ namespace BattleShip.Network
             var game = GameRunner.Instance();
             var playerInput = new PlayerInput();
             var commandStatusCode = response.Split(' ')[0];
+            coordinates = coordinates.Split(' ')[1];
             // TODO: to implement updating of opponent board
             if (int.TryParse(commandStatusCode, out int statusCode))
             {
+                //TODO: coordingates is in the shape of "fire a4", need to cut out fire
                 if (statusCode > 240 && statusCode < 256)
                 {
                     playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
