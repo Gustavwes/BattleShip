@@ -40,7 +40,7 @@ namespace BattleShip.Network
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
 
-
+                    Console.WriteLine("Started A Loop on Client");
                     var firstReplyIsCorrect = false;
                     while (client.Connected)
                     {

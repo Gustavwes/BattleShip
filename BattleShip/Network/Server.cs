@@ -51,6 +51,7 @@ namespace BattleShip.Network
                     var firstCommand = "";
                     while (client.Connected)
                     {
+                        Console.WriteLine("Started A Loop on Server");
                         while (!firstCommandFromClientIsHello)
                         {
                             writer.WriteLine("210 BattleShip/1.0");
