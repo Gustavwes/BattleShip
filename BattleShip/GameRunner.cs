@@ -35,7 +35,7 @@ namespace BattleShip
             Console.WriteLine("Player 1 Gameboard");
             player1.GameBoard.PrintCurrentBoardState(player1);
             player2.GameBoard = new GameBoard();
-            player2.ShipList = player2.GenerateShips();
+            //player2.ShipList = player2.GenerateShips();
             Console.WriteLine("Player 2 Gameboard");
             player2.GameBoard.GenerateGameBoard();
             player2.GameBoard.PrintCurrentBoardState(player2);

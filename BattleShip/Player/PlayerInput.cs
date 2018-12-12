@@ -50,9 +50,10 @@ namespace BattleShip.Player
             {
                 selectedSquare.HasShip = true;
                 selectedSquare.Hit = true;
-                var fakeShip = new Ship("fakeShip",1,"v");
+                var fakeShip = new Ship($"fakeShip{xAxis}{yAxis}",1,"v");
                 fakeShip.OccupyingSquares.Add(selectedSquare);
                 shipOnSquare = fakeShip;
+                player.ShipList.Add(fakeShip);
                 if (isSunk)
                     fakeShip.IsSunk = true;
                 return (true, "Hit was made");
