@@ -35,7 +35,7 @@ namespace BattleShip.Network
             var game = GameRunner.Instance();
             var gameCommandHandler = new GameCommandHandler();
             StartListen(port);
-            var hostTurn = false;
+            var myTurn = false;
 
             while (true)
             {
@@ -84,9 +84,9 @@ namespace BattleShip.Network
                         //Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
                         var command = reader.ReadLine();
                         Console.WriteLine($"Recieved: {command}");
-                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName, hostTurn);
+                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName, myTurn);
                         writer.WriteLine(responseToSend);
-                        if(string.Equals(command.Split(' ')[0], "221", StringComparison.InvariantCultureIgnoreCase))
+                        if(string.Equals(command.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                             Console.WriteLine("Your turn, enter command:");
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {

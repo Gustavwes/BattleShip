@@ -38,12 +38,12 @@ namespace BattleShip.Network
                     var firstReplyIsCorrect = false;
                     while (client.Connected)
                     {
-                        Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
-                        Console.WriteLine("Start the game by writing Hello");
-                        Console.WriteLine(reader.ReadLine());
-                        var firstReply = "";
                         while (!firstReplyIsCorrect)
                         {
+                            Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
+                            Console.WriteLine("Start the game by writing Hello");
+                            Console.WriteLine(reader.ReadLine());
+                            var firstReply = "";
                             var firstCommand = Console.ReadLine() + " " + userName;
                             writer.WriteLine(firstCommand);
                             firstReply = reader.ReadLine();
@@ -53,7 +53,7 @@ namespace BattleShip.Network
                             }
                             firstReplyIsCorrect = true;
                         }
-                        Console.WriteLine("Enter command to send: (write QUIT to quit)");
+                        Console.WriteLine("Enter command to send: ");
                         var text = Console.ReadLine();
 
                         if (text == "QUIT") break;
