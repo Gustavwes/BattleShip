@@ -8,7 +8,7 @@ namespace BattleShip.Network
 {
     class GameCommandHandler
     {
-
+        //bool not removed
         public string CommandSorter(string command, string myUserName, string otherPlayerUsername)
         {
             var playerInput = new PlayerInput();
