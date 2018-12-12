@@ -21,7 +21,7 @@ namespace BattleShip
             Console.WriteLine("Type in the host-ip if you wish to join a session. If you are hosting just press enter");
             var hostAddress = Console.ReadLine();
 
-            if (hostAddress.Length > 1)
+            if (hostAddress.Length < 1)
             {
                 var networkServer = new Server();
                 networkServer.StartServer(portNumber);
@@ -30,7 +30,6 @@ namespace BattleShip
             {
                 var networkClient = Client.Instance();
                 networkClient.StartClient(portNumber, hostAddress);
-
             }
 
         }
