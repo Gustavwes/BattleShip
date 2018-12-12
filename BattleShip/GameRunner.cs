@@ -58,7 +58,7 @@ namespace BattleShip
             Console.WriteLine(player1.PlayerName + " Board:");
             player1.GameBoard.PrintCurrentBoardState(player1);
             Console.WriteLine(player2.PlayerName + " Board:");
-            player1.GameBoard.PrintCurrentBoardState(player2);
+            player2.GameBoard.PrintCurrentBoardState(player2);
         }
         public void PlaceShips(Player.Player player)
         {
