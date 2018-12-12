@@ -61,6 +61,7 @@ namespace BattleShip.Network
                         {
                             connectedUserUsername = firstCommand.Split(' ')[1];
                             firstCommandFromClientIsHello = true;
+                            writer.WriteLine("220 " + hostUsername);
                         }
 
                         if (firstCommand.ToLower() == "quit")

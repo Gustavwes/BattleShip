@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -19,7 +20,7 @@ namespace BattleShip.Network
 
         public void StartClient(int portNumber, string hostAddress, string userName) //kanske ska vara static
         {
-            
+
 
             StartListen(portNumber);
 
@@ -34,7 +35,17 @@ namespace BattleShip.Network
                 {
                     Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
                     Console.WriteLine("Start the game by writing Hello");
-                    var firstReply = reader.ReadLine() + userName;
+                    var firstReplyIsCorrect = false;
+                    var firstReply = "";
+                    while (!firstReplyIsCorrect)
+                    {
+                        var firstCommand = Console.ReadLine() + " " + userName;
+                        writer.WriteLine(firstCommand);
+                        firstReply = reader.ReadLine();
+                        if (firstReply.Take(3).ToString() == "220")
+                            firstReplyIsCorrect = true;
+                    }
+
 
                     while (client.Connected)
                     {
@@ -64,8 +75,8 @@ namespace BattleShip.Network
             }
         }
 
-        
-       
+
+
 
         static void StartListen(int port)
         {
