@@ -21,12 +21,15 @@ namespace BattleShip.Network
         public void StartClient(int portNumber, string hostAddress, string userName, Player.Player hostPlayer, Player.Player clientPlayer) //kanske ska vara static
         {
 
-
+            var gameCommandHandler = new GameCommandHandler();
             StartListen(portNumber);
 
             while (true)
             {
                 Console.WriteLine("Waiting to connect");
+                var myTurn = false;
+                var hostUsername = "";
+                var responseToServer = "";
 
                 using (var client = new TcpClient(hostAddress, portNumber))
                 using (var networkStream = client.GetStream())
@@ -50,24 +53,38 @@ namespace BattleShip.Network
                             if (firstReply.Split(' ')[0] == "220")
                             {
                                 Console.WriteLine($"{firstReply}");
+                                hostUsername = firstReply.Split(' ')[1];
                             }
                             firstReplyIsCorrect = true;
                         }
-                        Console.WriteLine("Enter command to send: ");
-                        var text = Console.ReadLine();
 
-                        if (text == "QUIT") break;
+                        Console.WriteLine("Enter command to send: ");
+                        var command = Console.ReadLine();
+
+                        if (command == "QUIT") break;
 
                         // Skicka text
-                        writer.WriteLine(text);
+                        writer.WriteLine(command);
 
                         if (!client.Connected) break;
 
                         // Läs minst en rad
                         do
                         {
-                            var line = reader.ReadLine();
-                            Console.WriteLine($"Svar: {line}");
+                            var responseFromServer = reader.ReadLine();
+                            Console.WriteLine($"Svar: {responseFromServer}");
+                            if (string.Equals(responseFromServer.Split(' ')[0], "221", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                myTurn = true;
+                            }
+
+                            if (myTurn)
+                            {
+                                Console.WriteLine("Your turn, enter command:");
+                                command = Console.ReadLine();
+                            }
+                                command = gameCommandHandler.CommandSorter(command, userName, hostUsername);
+                            writer.WriteLine(command);
 
                         } while (networkStream.DataAvailable);
 

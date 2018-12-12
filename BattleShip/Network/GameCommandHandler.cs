@@ -9,37 +9,37 @@ namespace BattleShip.Network
     class GameCommandHandler
     {
 
-        public string CommandSorter(string command, string hostUserName, string clientUserName, bool myTurn)
+        public string CommandSorter(string command, string myUserName, string otherPlayerUsername)
         {
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
-            if (commandStatusCode == "221" || commandStatusCode == "222" && myTurn)
-            {
-                playerInput.SendMissile(game.player2);
-                Console.WriteLine($"{game.player1.PlayerName} GameBoard");
-                game.player1.GameBoard.PrintCurrentBoardState(game.player1);
+            //if (commandStatusCode == "221" || commandStatusCode == "222")
+            //{
+            //    playerInput.SendMissile(game.player2);
+            //    Console.WriteLine($"{game.player1.PlayerName} GameBoard");
+            //    game.player1.GameBoard.PrintCurrentBoardState(game.player1);
                
-                Console.WriteLine($"{game.player2.PlayerName} Gameboard");
+            //    Console.WriteLine($"{game.player2.PlayerName} Gameboard");
              
-                game.player2.GameBoard.PrintCurrentBoardState(game.player2);
-            }
+            //    game.player2.GameBoard.PrintCurrentBoardState(game.player2);
+            //}
             if (command.ToLower() == "start")
             {
-                return StartGame(clientUserName, hostUserName);
+                return StartGame(myUserName, otherPlayerUsername);
             }
             return "";
         }
 
-        public string StartGame(string localPlayer, string remotePlayer)
+        public string StartGame(string myUserName, string otherPlayerUsername)
         {
             var random = new Random();
             var randomResult = random.Next(1, 10);
             if (randomResult > 5)
-                return $"221 You, {localPlayer} will start";
+                return $"221 You, {myUserName} will start";
             else
             {
-                return $"222 The other player, {remotePlayer} will start.";
+                return $"222 The other player, {otherPlayerUsername} will start.";
             }
         }
         public void ReceiveHitMessage()

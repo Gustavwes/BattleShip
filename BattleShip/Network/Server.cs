@@ -84,24 +84,28 @@ namespace BattleShip.Network
                         //Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
                         var command = reader.ReadLine();
                         Console.WriteLine($"Recieved: {command}");
-                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName, myTurn);
-                        writer.WriteLine(responseToSend);
-                        if(string.Equals(command.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
+                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName);
+                        
+                        if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            myTurn = true;
+                        }
+
+                        if (myTurn)
+                        {
                             Console.WriteLine("Your turn, enter command:");
+                            command = Console.ReadLine();
+                            responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName);
+                        }
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             writer.WriteLine("BYE BYE");
                             break;
                         }
 
+                        myTurn = false;
+                        writer.WriteLine(responseToSend);
 
-                        if (string.Equals(command, "DATE", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            writer.WriteLine(DateTime.UtcNow.ToString("o"));
-                            break;
-                        }
-
-                        writer.WriteLine($"UNKNOWN COMMAND: {command}");
                     }
                 }
 
