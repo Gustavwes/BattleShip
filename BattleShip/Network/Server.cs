@@ -105,8 +105,10 @@ namespace BattleShip.Network
                         }
                         else
                         {
-                            Console.WriteLine("Waiting for opponent action...");
+                            Console.WriteLine("Waiting for opponent move...");
                             responseFromClient = reader.ReadLine();
+                            responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
+                            writer.WriteLine(responseToSend);
                         }
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
