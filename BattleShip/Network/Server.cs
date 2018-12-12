@@ -36,7 +36,7 @@ namespace BattleShip.Network
             var gameCommandHandler = new GameCommandHandler();
             StartListen(port);
             var myTurn = false;
-
+            var responseFromClient = "";
             while (true)
             {
                 Console.WriteLine("Waiting for player to connect...");
@@ -98,8 +98,14 @@ namespace BattleShip.Network
                             Console.WriteLine("Your turn, enter command:");
                             command = Console.ReadLine();
                             responseToSend = command;
-                            var responseFromClient = reader.ReadLine(); // Get if its a hit or miss
+                            writer.WriteLine(responseToSend);
+                            responseFromClient = reader.ReadLine(); // Get if its a hit or miss
 
+                        }
+                        else
+                        {
+                            Console.WriteLine("Waiting for opponent action...");
+                            responseFromClient = reader.ReadLine();
                         }
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
