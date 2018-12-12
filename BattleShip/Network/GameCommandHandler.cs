@@ -17,18 +17,7 @@ namespace BattleShip.Network
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
-            //if (commandStatusCode == "221" || commandStatusCode == "222")
-            //{
-            //    playerInput.SendMissile(game.player2);
-            //    Console.WriteLine($"{game.player1.PlayerName} GameBoard");
-            //    game.player1.GameBoard.PrintCurrentBoardState(game.player1);
-               
-            //    Console.WriteLine($"{game.player2.PlayerName} Gameboard");
-             
-            //    game.player2.GameBoard.PrintCurrentBoardState(game.player2);
-            //} 
-
-          
+   
             if (command.ToLower() == "start")
             {
                 return StartGame(game.player1.PlayerName, game.player2.PlayerName);
@@ -36,7 +25,7 @@ namespace BattleShip.Network
 
             if (command.Split(' ')[0].ToLower() == "fire")
             {
-                Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
+               // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
                 var coordinates = command.Split(' ')[1];
                 var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
                     game.player1);
@@ -56,7 +45,6 @@ namespace BattleShip.Network
             // TODO: to implement updating of opponent board
             if (int.TryParse(commandStatusCode, out int statusCode))
             {
-                //TODO: coordingates is in the shape of "fire a4", need to cut out fire
                 if (statusCode > 240 && statusCode < 256)
                 {
                     playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
