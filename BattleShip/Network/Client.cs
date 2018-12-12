@@ -90,6 +90,7 @@ namespace BattleShip.Network
                                 responseFromServer = reader.ReadLine();
                                 myCommand = gameCommandHandler.CommandSorter(responseFromServer);
                                 writer.WriteLine(myCommand);
+                                myTurn = false;
                             }
                             else
                             {
@@ -97,11 +98,11 @@ namespace BattleShip.Network
                                 responseFromServer = reader.ReadLine();
                                 myResponse = gameCommandHandler.CommandSorter(responseFromServer);
                                 writer.WriteLine(myResponse);
-
+                                myTurn = true;
 
                             }
-
-                            myTurn = false;
+                            game.PrintBothGameBoards();
+                            
                         } while (networkStream.DataAvailable);
 
                     }

@@ -101,6 +101,7 @@ namespace BattleShip.Network
                             responseFromClient = reader.ReadLine(); // Get if its a hit or miss
                             Console.WriteLine(responseFromClient);
                             gameCommandHandler.CommandSorter(responseFromClient);
+                            myTurn = false;
 
                         }
                         else
@@ -109,14 +110,14 @@ namespace BattleShip.Network
                             responseFromClient = reader.ReadLine();
                             responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
                             writer.WriteLine(responseToSend);
+                            myTurn = true;
                         }
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             writer.WriteLine("BYE BYE");
                             break;
                         }
-
-                        myTurn = false;
+                        game.PrintBothGameBoards();
 
                     }
                 }
