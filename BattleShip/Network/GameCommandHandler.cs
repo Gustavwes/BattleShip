@@ -28,7 +28,7 @@ namespace BattleShip.Network
                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
                 var coordinates = command.Split(' ')[1];
                 var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                    game.player1);
+                    game.player1, false);
                 
                 return hitMessage.Item2;
                 
@@ -48,7 +48,7 @@ namespace BattleShip.Network
                 if (statusCode > 240 && statusCode < 256)
                 {
                     playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                        game.player2);
+                        game.player2, true);
                 }
             }
 

@@ -40,11 +40,18 @@ namespace BattleShip.Player
             }
 
         }
-        public (bool, string) ReceiveHit(string xAxis, int yAxis, Player player)
+        public (bool, string) ReceiveHit(string xAxis, int yAxis, Player player, bool responseHit)
         {
             var hitShip = (false, "miss");
             var selectedSquare = player.GameBoard.GetSquare(xAxis, yAxis, player);
             var shipOnSquare = selectedSquare.GetShipOnSquare(player);
+
+            if (responseHit)
+            {
+                selectedSquare.HasShip = true;
+                selectedSquare.Hit = true;
+                return (true, "Hit was made");
+            }
 
 
             if (selectedSquare.HasShip && shipOnSquare != null)
