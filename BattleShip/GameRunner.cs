@@ -52,6 +52,14 @@ namespace BattleShip
             //player1.GameBoard.PrintCurrentBoardState(player1);
         }
 
+        public void PrintBothGameBoards()
+        {
+            Console.Clear();
+            Console.WriteLine(player1.PlayerName + " Board:");
+            player1.GameBoard.PrintCurrentBoardState(player1);
+            Console.WriteLine(player2.PlayerName + " Board:");
+            player2.GameBoard.PrintCurrentBoardState(player2);
+        }
         public void PlaceShips(Player.Player player)
         {
             var boardAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };

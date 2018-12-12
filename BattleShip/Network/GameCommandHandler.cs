@@ -45,6 +45,7 @@ namespace BattleShip.Network
             return "";
         }
 
+       
         public string StartGame(string myUserName, string otherPlayerUsername)
         {
             var random = new Random();

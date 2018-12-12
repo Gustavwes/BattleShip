@@ -100,7 +100,7 @@ namespace BattleShip.Player
                         hitShip = (true, "Something went wrong, couldn't find boat");
                         break;
                 }
-               
+
             }
 
             return hitShip;
@@ -113,14 +113,12 @@ namespace BattleShip.Player
             {
                 if (square.Hit == false)
                     allHit = false;
-                else
-                {
-                    ship.IsSunk = true;
-                    return allHit;
-                }
             }
 
-            ship.IsSunk = false;
+            if (allHit)
+                ship.IsSunk = true;
+            else
+                ship.IsSunk = false;
             return allHit;
         }
     }

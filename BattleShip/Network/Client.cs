@@ -22,6 +22,7 @@ namespace BattleShip.Network
         {
 
             var gameCommandHandler = new GameCommandHandler();
+            var game = GameRunner.Instance();
             StartListen(portNumber);
 
             while (true)
@@ -55,7 +56,7 @@ namespace BattleShip.Network
                             if (firstReply.Split(' ')[0] == "220")
                             {
                                 Console.WriteLine($"{firstReply}");
-                                hostUsername = firstReply.Split(' ')[1];
+                                game.player2.PlayerName = firstReply.Split(' ')[1];
                                 firstReplyIsCorrect = true;
                                 Console.WriteLine("Enter command to send: ");
                                 var command = Console.ReadLine();
@@ -96,6 +97,7 @@ namespace BattleShip.Network
                                 responseFromServer = reader.ReadLine();
                                 myResponse = gameCommandHandler.CommandSorter(responseFromServer);
                                 writer.WriteLine(myResponse);
+
 
                             }
 
