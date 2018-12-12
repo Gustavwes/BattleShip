@@ -33,9 +33,12 @@ namespace BattleShip.Network
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
                     Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
-                    writer.WriteLine(userName);
+                    Console.WriteLine("Start the game by writing Hello");
+                    var firstReply = reader.ReadLine() + userName;
+
                     while (client.Connected)
                     {
+                        Console.WriteLine($"{firstReply}");
                         Console.WriteLine("Enter command to send: (write QUIT to quit)");
                         var text = Console.ReadLine();
 
@@ -61,6 +64,7 @@ namespace BattleShip.Network
             }
         }
 
+        
        
 
         static void StartListen(int port)

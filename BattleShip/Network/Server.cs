@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -43,20 +44,44 @@ namespace BattleShip.Network
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
+                    var firstCommandFromClientIsHello = false;
+                    var firstCommand = "";
+                    var connectedUserUsername = "";
+                    writer.WriteLine("210 BattleShip/1.0");
+                    while (!firstCommandFromClientIsHello)
+                    {
+                        firstCommand = reader.ReadLine();
+                        if (firstCommand.Length < 6 && firstCommand.ToLower() != "quit")
+                        {
+                            writer.WriteLine("500 Syntax Error");
+                        }
+
+                        if (firstCommand.Take(4).ToString().ToLower() == "helo" ||
+                            firstCommand.Take(5).ToString().ToLower() == "hello".ToLower())
+                        {
+                            connectedUserUsername = firstCommand.Split(' ')[1];
+                            firstCommandFromClientIsHello = true;
+                        }
+
+                        if (firstCommand.ToLower() == "quit")
+                        {
+                            writer.WriteLine("270 Hasta la vista");
+                            break;
+                        }
+
+                    }
                     Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
-                    var recieveUserName = reader.ReadLine();
-                    writer.WriteLine("210 BattleShip/1.0 Welcome: " + recieveUserName + $" to {hostUsername} server");
                     while (client.Connected)
                     {
                         var command = reader.ReadLine();
-                        Console.WriteLine($"Recieved: {command}");  
+                        Console.WriteLine($"Recieved: {command}");
 
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             writer.WriteLine("BYE BYE");
                             break;
                         }
-                        
+
 
                         if (string.Equals(command, "DATE", StringComparison.InvariantCultureIgnoreCase))
                         {
