@@ -54,17 +54,17 @@ namespace BattleShip.Network
                             {
                                 Console.WriteLine($"{firstReply}");
                                 hostUsername = firstReply.Split(' ')[1];
+                                firstReplyIsCorrect = true;
+                            Console.WriteLine("Enter command to send: ");
+                            var command = Console.ReadLine();
+
+                            if (command == "QUIT") break;
+
+                            // Skicka text
+                            writer.WriteLine(command);
                             }
-                            firstReplyIsCorrect = true;
                         }
 
-                        Console.WriteLine("Enter command to send: ");
-                        var command = Console.ReadLine();
-
-                        if (command == "QUIT") break;
-
-                        // Skicka text
-                        writer.WriteLine(command);
 
                         if (!client.Connected) break;
 
@@ -81,6 +81,7 @@ namespace BattleShip.Network
                             Console.WriteLine(responseFromServer);
                             if (myTurn)
                             {
+                                var command = "";
                                 Console.WriteLine("Your turn, enter command:");
                                 command = Console.ReadLine();
                                 writer.WriteLine(command);
