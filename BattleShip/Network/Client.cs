@@ -33,22 +33,22 @@ namespace BattleShip.Network
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
-                    Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
-                    Console.WriteLine("Start the game by writing Hello");
-                    var firstReplyIsCorrect = false;
-                    var firstReply = "";
-                    while (!firstReplyIsCorrect)
-                    {
-                        var firstCommand = Console.ReadLine() + " " + userName;
-                        writer.WriteLine(firstCommand);
-                        firstReply = reader.ReadLine();
-                        if (firstReply.Take(3).ToString() == "220")
-                            firstReplyIsCorrect = true;
-                    }
 
 
                     while (client.Connected)
                     {
+                        Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
+                        Console.WriteLine("Start the game by writing Hello");
+                        var firstReplyIsCorrect = false;
+                        var firstReply = "";
+                        while (!firstReplyIsCorrect)
+                        {
+                            var firstCommand = Console.ReadLine() + " " + userName;
+                            writer.WriteLine(firstCommand);
+                            firstReply = reader.ReadLine();
+                            if (firstReply.Take(3).ToString() == "220")
+                                firstReplyIsCorrect = true;
+                        }
                         Console.WriteLine($"{firstReply}");
                         Console.WriteLine("Enter command to send: (write QUIT to quit)");
                         var text = Console.ReadLine();

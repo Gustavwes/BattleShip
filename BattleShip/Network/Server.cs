@@ -44,36 +44,36 @@ namespace BattleShip.Network
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
-                    var firstCommandFromClientIsHello = false;
-                    var firstCommand = "";
-                    var connectedUserUsername = "";
-                    writer.WriteLine("210 BattleShip/1.0");
-                    while (!firstCommandFromClientIsHello)
-                    {
-                        firstCommand = reader.ReadLine();
-                        if (firstCommand.Length < 6 && firstCommand.ToLower() != "quit")
-                        {
-                            writer.WriteLine("500 Syntax Error");
-                        }
-
-                        if (firstCommand.Take(4).ToString().ToLower() == "helo" ||
-                            firstCommand.Take(5).ToString().ToLower() == "hello".ToLower())
-                        {
-                            connectedUserUsername = firstCommand.Split(' ')[1];
-                            firstCommandFromClientIsHello = true;
-                            writer.WriteLine("220 " + hostUsername);
-                        }
-
-                        if (firstCommand.ToLower() == "quit")
-                        {
-                            writer.WriteLine("270 Hasta la vista");
-                            break;
-                        }
-
-                    }
-                    Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
                     while (client.Connected)
                     {
+                        var firstCommandFromClientIsHello = false;
+                        var firstCommand = "";
+                        var connectedUserUsername = "";
+                        writer.WriteLine("210 BattleShip/1.0");
+                        while (!firstCommandFromClientIsHello)
+                        {
+                            firstCommand = reader.ReadLine();
+                            if (firstCommand.Length < 6 && firstCommand.ToLower() != "quit")
+                            {
+                                writer.WriteLine("500 Syntax Error");
+                            }
+
+                            if (firstCommand.Take(4).ToString().ToLower() == "helo" ||
+                                firstCommand.Take(5).ToString().ToLower() == "hello".ToLower())
+                            {
+                                connectedUserUsername = firstCommand.Split(' ')[1];
+                                firstCommandFromClientIsHello = true;
+                                writer.WriteLine("220 " + hostUsername);
+                            }
+
+                            if (firstCommand.ToLower() == "quit")
+                            {
+                                writer.WriteLine("270 Hasta la vista");
+                                break;
+                            }
+
+                        }
+                        Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
                         var command = reader.ReadLine();
                         Console.WriteLine($"Recieved: {command}");
 
