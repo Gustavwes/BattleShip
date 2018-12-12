@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using BattleShip.Player;
 
 namespace BattleShip.Network
@@ -27,6 +28,12 @@ namespace BattleShip.Network
             if (command.ToLower() == "start")
             {
                 return StartGame(myUserName, otherPlayerUsername);
+            }
+
+            if (command.Split(' ')[0].ToLower() == "fire")
+            {
+                Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
+                
             }
             return "";
         }
