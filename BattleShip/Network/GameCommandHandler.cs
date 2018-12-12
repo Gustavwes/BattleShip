@@ -43,10 +43,10 @@ namespace BattleShip.Network
             var random = new Random();
             var randomResult = random.Next(1, 10);
             if (randomResult > 5)
-                return $"221 You, {myUserName} will start";
+                return $"221 You, {otherPlayerUsername} will start";
             else
             {
-                return $"222 The other player, {otherPlayerUsername} will start.";
+                return $"222 The other player, {myUserName} will start.";
             }
         }
         public void ReceiveHitMessage()
