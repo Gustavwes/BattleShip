@@ -84,10 +84,11 @@ namespace BattleShip.Network
                                 command = Console.ReadLine();
                                 writer.WriteLine(command);
                                 responseFromServer = reader.ReadLine();
-                            }
                                 command = gameCommandHandler.CommandSorter(responseFromServer, userName, hostUsername);
-                            writer.WriteLine(command);
+                                writer.WriteLine(command);
+                            }
 
+                            myTurn = false;
                         } while (networkStream.DataAvailable);
 
                     }
