@@ -44,9 +44,9 @@ namespace BattleShip.Network
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
+                    var firstCommandFromClientIsHello = false;
                     while (client.Connected)
                     {
-                        var firstCommandFromClientIsHello = false;
                         var firstCommand = "";
                         var connectedUserUsername = "";
                         writer.WriteLine("210 BattleShip/1.0");
