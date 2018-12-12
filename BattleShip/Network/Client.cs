@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+namespace BattleShip.Network
+{
+    public class Client
+    {
+        static TcpListener listener;
+        private static Client _instance;
+
+        public static Client Instance()
+        {
+            return _instance ?? (_instance = new Client());
+        }
+
+        public void StartClient(int portNumber, string hostAddress) //kanske ska vara static
+        {
+            
+
+            StartListen(portNumber);
+
+            while (true)
+            {
+                Console.WriteLine("Väntar på att ansluta");
+
+                using (var client = new TcpClient(hostAddress, portNumber))
+                using (var networkStream = client.GetStream())
+                using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
+                using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
+                {
+                    Console.WriteLine($"Ansluten till {client.Client.RemoteEndPoint}");
+                    while (client.Connected)
+                    {
+                        Console.WriteLine("Ange text att skicka: (Skriv QUIT för att avsluta)");
+                        var text = Console.ReadLine();
+
+                        if (text == "QUIT") break;
+
+                        // Skicka text
+                        writer.WriteLine(text);
+
+                        if (!client.Connected) break;
+
+                        // Läs minst en rad
+                        do
+                        {
+                            var line = reader.ReadLine();
+                            Console.WriteLine($"Svar: {line}");
+
+                        } while (networkStream.DataAvailable);
+
+                    }
+
+                }
+
+            }
+        }
+
+       
+
+        static void StartListen(int port)
+        {
+            try
+            {
+                listener = new TcpListener(IPAddress.Any, port);
+                listener.Start();
+                Console.WriteLine($"Starts listening on port: {port}");
+            }
+            catch (SocketException ex)
+            {
+                Console.WriteLine("Misslyckades att öppna socket. Troligtvis upptagen.");
+                Environment.Exit(1);
+            }
+        }
+    }
+}
