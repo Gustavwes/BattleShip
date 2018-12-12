@@ -32,8 +32,10 @@ namespace BattleShip.Network
             //Console.WriteLine("Välkommen till servern");
             //Console.WriteLine("Ange port att lyssna på:");
             //var port = int.Parse(Console.ReadLine());
+            var game = GameRunner.Instance();
             var gameCommandHandler = new GameCommandHandler();
             StartListen(port);
+            var hostTurn = false;
 
             while (true)
             {
@@ -62,6 +64,7 @@ namespace BattleShip.Network
                                 firstCommand.Split(' ')[0].ToLower() == "hello")
                             {
                                 clientUserName = firstCommand.Split(' ')[1];
+                                game.player2.PlayerName = clientUserName;
                                 firstCommandFromClientIsHello = true;
                                 writer.WriteLine("220 " + hostUsername);
                                 continue;
@@ -81,7 +84,7 @@ namespace BattleShip.Network
                         //Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
                         var command = reader.ReadLine();
                         Console.WriteLine($"Recieved: {command}");
-                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName);
+                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName, hostTurn);
                         writer.WriteLine(responseToSend);
                         if(string.Equals(command.Split(' ')[0], "221", StringComparison.InvariantCultureIgnoreCase))
                             Console.WriteLine("Your turn, enter command:");

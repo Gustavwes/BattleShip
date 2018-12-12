@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BattleShip.Game_Board
 {
-    class GameBoard
+    public class GameBoard
     {
         public List<Square> GameSquares { get; set; }
 

@@ -18,7 +18,7 @@ namespace BattleShip.Network
             return _instance ?? (_instance = new Client());
         }
 
-        public void StartClient(int portNumber, string hostAddress, string userName) //kanske ska vara static
+        public void StartClient(int portNumber, string hostAddress, string userName, Player.Player hostPlayer, Player.Player clientPlayer) //kanske ska vara static
         {
 
 

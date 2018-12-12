@@ -9,7 +9,7 @@ namespace BattleShip.Player
 {
     class PlayerInput
     {
-        public void SendMissile(Player player)
+        public void SendMissile(Player playerToHit)
         {
             var boardAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
             var inputInComplete = true;
@@ -34,7 +34,7 @@ namespace BattleShip.Player
                     continue;
                 }
 
-                var selectedSquare = player.GameBoard.GetSquare(inputXAxis, inputYAxis, player);
+                var selectedSquare = playerToHit.GameBoard.GetSquare(inputXAxis, inputYAxis, playerToHit);
                 selectedSquare.Hit = true;
                 inputInComplete = false;
             }

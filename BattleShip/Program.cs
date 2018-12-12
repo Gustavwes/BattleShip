@@ -13,7 +13,7 @@ namespace BattleShip
         static void Main(string[] args)
         {
 
-            var game = new GameRunner();
+            var game = GameRunner.Instance();
             Console.WriteLine("Enter player name");
             var playerName = Console.ReadLine();
             game.RunGame(playerName);
@@ -31,7 +31,7 @@ namespace BattleShip
             else
             {
                 var networkClient = Client.Instance();
-                networkClient.StartClient(portNumber, hostAddress,playerName);
+                networkClient.StartClient(portNumber, hostAddress,game.player1.PlayerName, game.player1, game.player2);
             }
 
         }
