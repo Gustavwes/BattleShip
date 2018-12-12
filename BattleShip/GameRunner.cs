@@ -10,11 +10,13 @@ namespace BattleShip
     class GameRunner
     {
        
-        public void RunGame()
+        public void RunGame(string playerName)
         {
             var player1 = new Player.Player();
             var player2 = new Player.Player();
-            var playerInput = new PlayerInput();
+            //var playerInput = new PlayerInput();
+            
+            player1.PlayerName = playerName;
             player1.GameBoard = new GameBoard();
             player1.GameBoard.GenerateGameBoard();
             player1.ShipList = player1.GenerateShips();
@@ -39,7 +41,7 @@ namespace BattleShip
             //playerInput.ReceiveHit("a",5,player1);
             //playerInput.ReceiveHit("b", 5, player1);
 
-            player1.GameBoard.PrintCurrentBoardState(player1);
+            //player1.GameBoard.PrintCurrentBoardState(player1);
         }
 
         public void PlaceShips(Player.Player player)

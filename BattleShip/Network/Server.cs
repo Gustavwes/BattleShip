@@ -26,7 +26,7 @@ namespace BattleShip.Network
             }
         }
 
-        public void StartServer(int port)
+        public void StartServer(int port, string hostUsername)
         {
             //Console.WriteLine("Välkommen till servern");
             //Console.WriteLine("Ange port att lyssna på:");
@@ -44,7 +44,8 @@ namespace BattleShip.Network
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
                     Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
-
+                    var recieveUserName = reader.ReadLine();
+                    writer.WriteLine("210 BattleShip/1.0 Welcome: " + recieveUserName + $" to {hostUsername} server");
                     while (client.Connected)
                     {
                         var command = reader.ReadLine();

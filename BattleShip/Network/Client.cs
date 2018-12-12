@@ -17,7 +17,7 @@ namespace BattleShip.Network
             return _instance ?? (_instance = new Client());
         }
 
-        public void StartClient(int portNumber, string hostAddress) //kanske ska vara static
+        public void StartClient(int portNumber, string hostAddress, string userName) //kanske ska vara static
         {
             
 
@@ -33,6 +33,7 @@ namespace BattleShip.Network
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
                     Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
+                    writer.WriteLine(userName);
                     while (client.Connected)
                     {
                         Console.WriteLine("Enter command to send: (write QUIT to quit)");

@@ -14,7 +14,9 @@ namespace BattleShip
         {
 
             var game = new GameRunner();
-            game.RunGame();
+            Console.WriteLine("Enter player name");
+            var playerName = Console.ReadLine();
+            game.RunGame(playerName);
             var portNumber = 0;
             Console.WriteLine("Welcome to Battleship! Enter a port-number to start");
             portNumber = int.Parse(Console.ReadLine());
@@ -24,12 +26,12 @@ namespace BattleShip
             if (hostAddress.Length < 1)
             {
                 var networkServer = new Server();
-                networkServer.StartServer(portNumber);
+                networkServer.StartServer(portNumber,playerName);
             }
             else
             {
                 var networkClient = Client.Instance();
-                networkClient.StartClient(portNumber, hostAddress);
+                networkClient.StartClient(portNumber, hostAddress,playerName);
             }
 
         }
