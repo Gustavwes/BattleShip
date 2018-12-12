@@ -30,6 +30,8 @@ namespace BattleShip.Network
                 var myTurn = false;
                 var hostUsername = "";
                 var responseToServer = "";
+                                var myCommand = "";
+                var myResponse = "";
 
                 using (var client = new TcpClient(hostAddress, portNumber))
                 using (var networkStream = client.GetStream())
@@ -81,16 +83,24 @@ namespace BattleShip.Network
                             Console.WriteLine(responseFromServer);
                             if (myTurn)
                             {
-                                var command = "";
                                 Console.WriteLine("Your turn, enter command:");
-                                command = Console.ReadLine();
-                                writer.WriteLine(command);
+                                myCommand = Console.ReadLine();
+                                writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
-                                command = gameCommandHandler.CommandSorter(responseFromServer, userName, hostUsername);
-                                writer.WriteLine(command);
+                                myCommand = gameCommandHandler.CommandSorter(responseFromServer, userName, hostUsername);
+                                writer.WriteLine(myCommand);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Waiting for opponent move...");
+                                responseFromServer = reader.ReadLine();
+                                myResponse = gameCommandHandler.CommandSorter(responseFromServer,
+                                    clientPlayer.PlayerName, hostUsername);
+                                writer.WriteLine(myResponse);
+
                             }
 
-                            myTurn = false;
+                            myTurn = true;
                         } while (networkStream.DataAvailable);
 
                     }
