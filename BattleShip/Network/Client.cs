@@ -33,7 +33,7 @@ namespace BattleShip.Network
                 var responseToServer = "";
                 var myCommand = "";
                 var myResponse = "";
-
+                var responseFromServer = "";
                 using (var client = new TcpClient(hostAddress, portNumber))
                 using (var networkStream = client.GetStream())
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
@@ -66,22 +66,22 @@ namespace BattleShip.Network
                                 // Skicka text
                                 writer.WriteLine(command);
                             }
-                        }
-
-
                         if (!client.Connected) break;
 
-                        var responseFromServer = reader.ReadLine();
+                        responseFromServer = reader.ReadLine();
                         Console.WriteLine($"Svar: {responseFromServer}");
-                        // Läs minst en rad test
-                        do
-                        {
                             if (string.Equals(responseFromServer.Split(' ')[0], "221", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 myTurn = true;
                             }
 
                             Console.WriteLine(responseFromServer);
+                        }
+
+
+                        // Läs minst en rad test
+                        do
+                        {
                             if (myTurn)
                             {
                                 Console.WriteLine("Your turn, enter command:");
