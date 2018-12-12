@@ -51,6 +51,7 @@ namespace BattleShip.Network
                     var firstCommand = "";
                     while (client.Connected)
                     {
+                        Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
                         Console.WriteLine("Started A Loop on Server");
                         while (!firstCommandFromClientIsHello)
                         {
@@ -68,7 +69,7 @@ namespace BattleShip.Network
                                 game.player2.PlayerName = clientUserName;
                                 firstCommandFromClientIsHello = true;
                                 writer.WriteLine("220 " + hostUsername);
-                                continue;
+
                             }
 
                             if (firstCommand.ToLower() == "quit")
@@ -76,32 +77,27 @@ namespace BattleShip.Network
                                 writer.WriteLine("270 Hasta la vista");
                                 break;
                             }
-                            else
+                            var command = reader.ReadLine();
+                            Console.WriteLine($"Recieved: {command}");
+                            var responseToSend = gameCommandHandler.CommandSorter(command);
+
+                            if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                writer.WriteLine("500 Syntax Error");
+                                myTurn = true;
                             }
-
-                        }
-                        //Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
-
-                        var command = reader.ReadLine();
-                        Console.WriteLine($"Recieved: {command}");
-                        var responseToSend = gameCommandHandler.CommandSorter(command);
-
-                        if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            myTurn = true;
-                        }
-
                         writer.WriteLine(responseToSend);
+                        }
+
+
+                        var myCommand = "";
                         if (myTurn)
                         {
                             Console.WriteLine("Your turn, enter command:");
-                            responseToSend = Console.ReadLine();
-                            writer.WriteLine(responseToSend);
+                            myCommand = Console.ReadLine();
+                            writer.WriteLine(myCommand);
                             responseFromClient = reader.ReadLine(); // Get if its a hit or miss
                             Console.WriteLine(responseFromClient);
-                            gameCommandHandler.ResponseSorter(responseFromClient, responseToSend);
+                            gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
                             //gameCommandHandler.CommandSorter(responseFromClient);
                             myTurn = false;
 
@@ -111,12 +107,12 @@ namespace BattleShip.Network
                             Console.WriteLine("Waiting for opponent move...");
                             responseFromClient = reader.ReadLine();
 
-                            responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
+                            var responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
 
                             writer.WriteLine(responseToSend);
                             myTurn = true;
                         }
-                        if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
+                        if (string.Equals(myCommand, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             writer.WriteLine("BYE BYE");
                             break;
