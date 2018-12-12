@@ -7,7 +7,7 @@ using BattleShip.Game_Board;
 
 namespace BattleShip.Player
 {
-    class PlayerInput
+    public class PlayerInput
     {
         public void SendMissile(Player playerToHit)
         {
@@ -55,10 +55,52 @@ namespace BattleShip.Player
                     true;
                 if (CheckIfBoatIsSunk(shipOnSquare))
                 {
-                    hitShip = (true, $"{shipOnSquare.ShipName} is sunk");
+                    switch (shipOnSquare.ShipName)
+                    {
+                        case "Carrier":
+                            hitShip = (true, "251 You sunk my Carrier");
+                            break;
+                        case "Battleship":
+                            hitShip = (true, "252 You sunk my Battleship");
+                            break;
+                        case "Destroyer":
+                            hitShip = (true, "253 You sunk my Destroyer");
+                            break;
+                        case "Submarine":
+                            hitShip = (true, "254 You sunk my Submarine");
+                            break;
+                        case "Patrol Boat":
+                            hitShip = (true, "255 You sunk my Patrol Boat");
+                            break;
+                        default:
+                            hitShip = (true, "Something went wrong, couldn't find boat");
+                            break;
+                    }
                     return (hitShip);
                 }
-                hitShip = (true, "hit");
+
+                switch (shipOnSquare.ShipName)
+                {
+                    case "Carrier":
+                        hitShip = (true, "241 You hit my Carrier");
+                        break;
+                    case "Battleship":
+                        hitShip = (true, "242 You hit my Battleship");
+                        break;
+                    case "Destroyer":
+                        hitShip = (true, "243 You hit my Destroyer");
+                        break;
+                    case "Submarine":
+                        hitShip = (true, "244 You hit my Submarine");
+                        break;
+                    case "Patrol Boat":
+                        hitShip = (true, "245 You hit my Patrol Boat");
+                        break;
+                    default:
+                        hitShip = (true, "Something went wrong, couldn't find boat");
+                        break;
+                }
+               
             }
 
             return hitShip;

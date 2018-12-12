@@ -30,7 +30,7 @@ namespace BattleShip.Network
                 var myTurn = false;
                 var hostUsername = "";
                 var responseToServer = "";
-                                var myCommand = "";
+                var myCommand = "";
                 var myResponse = "";
 
                 using (var client = new TcpClient(hostAddress, portNumber))
@@ -57,24 +57,24 @@ namespace BattleShip.Network
                                 Console.WriteLine($"{firstReply}");
                                 hostUsername = firstReply.Split(' ')[1];
                                 firstReplyIsCorrect = true;
-                            Console.WriteLine("Enter command to send: ");
-                            var command = Console.ReadLine();
+                                Console.WriteLine("Enter command to send: ");
+                                var command = Console.ReadLine();
 
-                            if (command == "QUIT") break;
+                                if (command == "QUIT") break;
 
-                            // Skicka text
-                            writer.WriteLine(command);
+                                // Skicka text
+                                writer.WriteLine(command);
                             }
                         }
 
 
                         if (!client.Connected) break;
 
+                        var responseFromServer = reader.ReadLine();
+                        Console.WriteLine($"Svar: {responseFromServer}");
                         // Läs minst en rad test
                         do
                         {
-                            var responseFromServer = reader.ReadLine();
-                            Console.WriteLine($"Svar: {responseFromServer}");
                             if (string.Equals(responseFromServer.Split(' ')[0], "221", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 myTurn = true;
@@ -99,7 +99,7 @@ namespace BattleShip.Network
 
                             }
 
-                            myTurn = true;
+                            myTurn = false;
                         } while (networkStream.DataAvailable);
 
                     }

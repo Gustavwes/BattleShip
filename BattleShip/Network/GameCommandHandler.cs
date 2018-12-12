@@ -9,9 +9,11 @@ namespace BattleShip.Network
 {
     class GameCommandHandler
     {
+        
         //bool not removed
         public string CommandSorter(string command)
         {
+            
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
@@ -33,7 +35,12 @@ namespace BattleShip.Network
             if (command.Split(' ')[0].ToLower() == "fire")
             {
                 Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
-                return "You fired at" + command.Split(' ')[1];
+                var coordinates = command.Split(' ')[1];
+                var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                    game.player1);
+                
+                return hitMessage.Item2;
+                
             }
             return "";
         }
