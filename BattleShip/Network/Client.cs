@@ -82,8 +82,10 @@ namespace BattleShip.Network
                             {
                                 Console.WriteLine("Your turn, enter command:");
                                 command = Console.ReadLine();
+                                writer.WriteLine(command);
+                                responseFromServer = reader.ReadLine();
                             }
-                                command = gameCommandHandler.CommandSorter(command, userName, hostUsername);
+                                command = gameCommandHandler.CommandSorter(responseFromServer, userName, hostUsername);
                             writer.WriteLine(command);
 
                         } while (networkStream.DataAvailable);
