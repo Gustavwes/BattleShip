@@ -58,18 +58,23 @@ namespace BattleShip.Network
                                 writer.WriteLine("500 Syntax Error");
                             }
 
-                            if (firstCommand.Take(4).ToString().ToLower() == "helo" ||
-                                firstCommand.Take(5).ToString().ToLower() == "hello".ToLower())
+                            if (firstCommand.Split(' ')[0].ToLower() == "helo" ||
+                                firstCommand.Split(' ')[0].ToLower() == "hello")
                             {
                                 connectedUserUsername = firstCommand.Split(' ')[1];
                                 firstCommandFromClientIsHello = true;
                                 writer.WriteLine("220 " + hostUsername);
+                                continue;
                             }
 
                             if (firstCommand.ToLower() == "quit")
                             {
                                 writer.WriteLine("270 Hasta la vista");
                                 break;
+                            }
+                            else
+                            {
+                                writer.WriteLine("500 Syntax Error");
                             }
 
                         }
