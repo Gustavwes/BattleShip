@@ -78,6 +78,7 @@ namespace BattleShip.Network
                                 myTurn = true;
                             }
 
+                            Console.WriteLine(responseFromServer);
                             if (myTurn)
                             {
                                 Console.WriteLine("Your turn, enter command:");
