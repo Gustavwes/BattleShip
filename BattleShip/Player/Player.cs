@@ -6,7 +6,7 @@ using BattleShip.Game_Board;
 
 namespace BattleShip.Player
 {
-    class Player
+    public class Player
     {
         public string PlayerName { get; set; }
         public List<Ship> ShipList { get; set; }

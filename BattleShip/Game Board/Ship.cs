@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BattleShip.Game_Board
 {
-    class Ship
+    public class Ship
     {
         public string ShipName { get; set; }
         public int ShipLength { get; set; }

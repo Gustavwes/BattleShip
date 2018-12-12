@@ -18,7 +18,7 @@ namespace BattleShip.Network
             return _instance ?? (_instance = new Client());
         }
 
-        public void StartClient(int portNumber, string hostAddress, string userName) //kanske ska vara static
+        public void StartClient(int portNumber, string hostAddress, string userName, Player.Player hostPlayer, Player.Player clientPlayer) //kanske ska vara static
         {
 
 
@@ -35,21 +35,24 @@ namespace BattleShip.Network
                 {
 
 
+                    var firstReplyIsCorrect = false;
                     while (client.Connected)
                     {
                         Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
                         Console.WriteLine("Start the game by writing Hello");
-                        var firstReplyIsCorrect = false;
+                        Console.WriteLine(reader.ReadLine());
                         var firstReply = "";
                         while (!firstReplyIsCorrect)
                         {
                             var firstCommand = Console.ReadLine() + " " + userName;
                             writer.WriteLine(firstCommand);
                             firstReply = reader.ReadLine();
-                            if (firstReply.Take(3).ToString() == "220")
-                                firstReplyIsCorrect = true;
+                            if (firstReply.Split(' ')[0] == "220")
+                            {
+                                Console.WriteLine($"{firstReply}");
+                            }
+                            firstReplyIsCorrect = true;
                         }
-                        Console.WriteLine($"{firstReply}");
                         Console.WriteLine("Enter command to send: (write QUIT to quit)");
                         var text = Console.ReadLine();
 

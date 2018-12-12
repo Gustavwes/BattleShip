@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BattleShip.Game_Board
 {
-    class Square
+    public class Square
     {
         public bool Hit { get; set; }
         public bool HasShip { get; set; }

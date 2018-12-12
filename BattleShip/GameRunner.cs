@@ -9,11 +9,19 @@ namespace BattleShip
 {
     class GameRunner
     {
-       
+
+        private static GameRunner _instance;
+        public Player.Player player1;
+        public Player.Player player2;
+        public static GameRunner Instance()
+        {
+            return _instance ?? (_instance = new GameRunner());
+        }
+
         public void RunGame(string playerName)
         {
-            var player1 = new Player.Player();
-            var player2 = new Player.Player();
+            player1 = new Player.Player();
+            player2 = new Player.Player();
             //var playerInput = new PlayerInput();
             
             player1.PlayerName = playerName;
