@@ -68,7 +68,7 @@ namespace BattleShip.Network
 
                         if (!client.Connected) break;
 
-                        // Läs minst en rad
+                        // Läs minst en rad test
                         do
                         {
                             var responseFromServer = reader.ReadLine();
