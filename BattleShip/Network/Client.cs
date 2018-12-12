@@ -25,17 +25,17 @@ namespace BattleShip.Network
 
             while (true)
             {
-                Console.WriteLine("Väntar på att ansluta");
+                Console.WriteLine("Waiting to connect");
 
                 using (var client = new TcpClient(hostAddress, portNumber))
                 using (var networkStream = client.GetStream())
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
-                    Console.WriteLine($"Ansluten till {client.Client.RemoteEndPoint}");
+                    Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
                     while (client.Connected)
                     {
-                        Console.WriteLine("Ange text att skicka: (Skriv QUIT för att avsluta)");
+                        Console.WriteLine("Enter command to send: (write QUIT to quit)");
                         var text = Console.ReadLine();
 
                         if (text == "QUIT") break;

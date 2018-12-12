@@ -24,7 +24,7 @@ namespace BattleShip
             if (hostAddress.Length > 1)
             {
                 var networkServer = new Server();
-                networkServer.StartServer();
+                networkServer.StartServer(portNumber);
             }
             else
             {

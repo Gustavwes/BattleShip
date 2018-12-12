@@ -31,13 +31,13 @@ namespace BattleShip
             player2.GameBoard.PrintCurrentBoardState(player2);
 
             //Tests
-            player2.GameBoard.GameSquares[0].HasShip = true;
-            player2.GameBoard.GameSquares[0].Hit=true;
-            player2.GameBoard.GameSquares[1].Hit = true;
-            Console.Clear();
-            playerInput.SendMissile(player2);
-            playerInput.ReceiveHit("a",5,player1);
-            playerInput.ReceiveHit("b", 5, player1);
+            //player2.GameBoard.GameSquares[0].HasShip = true;
+            //player2.GameBoard.GameSquares[0].Hit=true;
+            //player2.GameBoard.GameSquares[1].Hit = true;
+            //Console.Clear();
+            //playerInput.SendMissile(player2);
+            //playerInput.ReceiveHit("a",5,player1);
+            //playerInput.ReceiveHit("b", 5, player1);
 
             player1.GameBoard.PrintCurrentBoardState(player1);
         }
