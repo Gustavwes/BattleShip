@@ -46,11 +46,11 @@ namespace BattleShip.Network
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
-                        var firstCommandFromClientIsHello = false;
+                    var firstCommandFromClientIsHello = false;
                     var clientUserName = "";
+                    var firstCommand = "";
                     while (client.Connected)
                     {
-                        var firstCommand = "";
                         writer.WriteLine("210 BattleShip/1.0");
                         while (!firstCommandFromClientIsHello)
                         {
@@ -82,10 +82,11 @@ namespace BattleShip.Network
 
                         }
                         //Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
+
                         var command = reader.ReadLine();
                         Console.WriteLine($"Recieved: {command}");
                         var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName);
-                        
+
                         if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                         {
                             myTurn = true;
@@ -93,9 +94,12 @@ namespace BattleShip.Network
 
                         if (myTurn)
                         {
+                            writer.WriteLine(responseToSend);
                             Console.WriteLine("Your turn, enter command:");
                             command = Console.ReadLine();
-                            responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName);
+                            responseToSend = command;
+                            var responseFromClient = reader.ReadLine(); // Get if its a hit or miss
+
                         }
                         if (string.Equals(command, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {
