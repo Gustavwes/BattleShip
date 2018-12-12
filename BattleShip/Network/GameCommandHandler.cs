@@ -10,7 +10,7 @@ namespace BattleShip.Network
     class GameCommandHandler
     {
         //bool not removed
-        public string CommandSorter(string command, string myUserName, string otherPlayerUsername)
+        public string CommandSorter(string command)
         {
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
@@ -27,13 +27,13 @@ namespace BattleShip.Network
             //}
             if (command.ToLower() == "start")
             {
-                return StartGame(myUserName, otherPlayerUsername);
+                return StartGame(game.player1.PlayerName, game.player2.PlayerName);
             }
 
             if (command.Split(' ')[0].ToLower() == "fire")
             {
                 Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
-                
+                return "You fired at" + command.Split(' ')[1];
             }
             return "";
         }

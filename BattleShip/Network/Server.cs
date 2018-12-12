@@ -51,9 +51,9 @@ namespace BattleShip.Network
                     var firstCommand = "";
                     while (client.Connected)
                     {
-                        writer.WriteLine("210 BattleShip/1.0");
                         while (!firstCommandFromClientIsHello)
                         {
+                            writer.WriteLine("210 BattleShip/1.0");
                             firstCommand = reader.ReadLine();
                             if (firstCommand.Length < 6 && firstCommand.ToLower() != "quit")
                             {
@@ -85,21 +85,22 @@ namespace BattleShip.Network
 
                         var command = reader.ReadLine();
                         Console.WriteLine($"Recieved: {command}");
-                        var responseToSend = gameCommandHandler.CommandSorter(command, hostUsername, clientUserName);
+                        var responseToSend = gameCommandHandler.CommandSorter(command);
 
                         if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                         {
                             myTurn = true;
                         }
 
+                        writer.WriteLine(responseToSend);
                         if (myTurn)
                         {
-                            writer.WriteLine(responseToSend);
                             Console.WriteLine("Your turn, enter command:");
-                            command = Console.ReadLine();
-                            responseToSend = command;
+                            responseToSend = Console.ReadLine();
                             writer.WriteLine(responseToSend);
                             responseFromClient = reader.ReadLine(); // Get if its a hit or miss
+                            Console.WriteLine(responseFromClient);
+                            gameCommandHandler.CommandSorter(responseFromClient);
 
                         }
                         else
@@ -114,7 +115,6 @@ namespace BattleShip.Network
                         }
 
                         myTurn = false;
-                        writer.WriteLine(responseToSend);
 
                     }
                 }

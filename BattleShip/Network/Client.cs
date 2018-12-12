@@ -87,15 +87,14 @@ namespace BattleShip.Network
                                 myCommand = Console.ReadLine();
                                 writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
-                                myCommand = gameCommandHandler.CommandSorter(responseFromServer, userName, hostUsername);
+                                myCommand = gameCommandHandler.CommandSorter(responseFromServer);
                                 writer.WriteLine(myCommand);
                             }
                             else
                             {
                                 Console.WriteLine("Waiting for opponent move...");
                                 responseFromServer = reader.ReadLine();
-                                myResponse = gameCommandHandler.CommandSorter(responseFromServer,
-                                    clientPlayer.PlayerName, hostUsername);
+                                myResponse = gameCommandHandler.CommandSorter(responseFromServer);
                                 writer.WriteLine(myResponse);
 
                             }
