@@ -40,7 +40,7 @@ namespace BattleShip.Player
             }
 
         }
-        public (bool, string) ReceiveHit(string xAxis, int yAxis, Player player, bool responseHit)
+        public (bool, string) ReceiveHit(string xAxis, int yAxis, Player player, bool responseHit, bool isSunk)
         {
             var hitShip = (false, "miss");
             var selectedSquare = player.GameBoard.GetSquare(xAxis, yAxis, player);
@@ -50,11 +50,15 @@ namespace BattleShip.Player
             {
                 selectedSquare.HasShip = true;
                 selectedSquare.Hit = true;
+                var fakeShip = new Ship("fakeShip",1,"v");
+                fakeShip.OccupyingSquares.Add(selectedSquare);
+                if (isSunk)
+                    fakeShip.IsSunk = true;
                 return (true, "Hit was made");
             }
 
 
-            if (selectedSquare.HasShip && shipOnSquare != null)
+            if (selectedSquare.HasShip && shipOnSquare != null && responseHit == false)
             {
                 selectedSquare.Hit = true;
                 shipOnSquare.OccupyingSquares

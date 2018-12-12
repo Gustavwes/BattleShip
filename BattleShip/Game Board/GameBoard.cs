@@ -68,7 +68,7 @@ namespace BattleShip.Game_Board
 
             foreach (var square in listOfSquares)
             {
-                var shipOnSquare = square.GetShipOnSquare(player); //jobbar med att kunna printa ut om något har sjunkit
+                var shipOnSquare = square.GetShipOnSquare(player); 
                 if (square.HasShip && square.Hit == false)
                 {
                     Console.Write($"|O|");

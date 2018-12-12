@@ -28,7 +28,7 @@ namespace BattleShip.Network
                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
                 var coordinates = command.Split(' ')[1];
                 var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                    game.player1, false);
+                    game.player1, false,false);
                 
                 return hitMessage.Item2;
                 
@@ -45,10 +45,15 @@ namespace BattleShip.Network
             // TODO: to implement updating of opponent board
             if (int.TryParse(commandStatusCode, out int statusCode))
             {
-                if (statusCode > 240 && statusCode < 256)
+                if (statusCode > 240 && statusCode < 250)
                 {
                     playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                        game.player2, true);
+                        game.player2, true, false);
+                }
+                if (statusCode > 250 && statusCode < 260)
+                {
+                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                        game.player2, true, true);
                 }
             }
 
