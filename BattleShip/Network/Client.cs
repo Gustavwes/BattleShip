@@ -58,7 +58,7 @@ namespace BattleShip.Network
                                 Console.WriteLine($"{firstReply}");
                                 game.player2.PlayerName = firstReply.Split(' ')[1];
                                 firstReplyIsCorrect = true;
-                                Console.WriteLine("Enter command to send: ");
+                                Console.WriteLine("Enter Start to start: ");
                                 var command = Console.ReadLine();
 
                                 if (command == "QUIT") break;
