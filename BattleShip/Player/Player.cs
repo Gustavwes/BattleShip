@@ -12,7 +12,7 @@ namespace BattleShip.Player
         public List<Ship> ShipList { get; set; }
         public GameBoard GameBoard { get; set; }
 
-        public List<Ship> GenerateShips()
+        public List<Ship> GenerateShipsForPlayer()
         {
             var carrier = new Ship("Carrier", 5, "X");
             var battleShip = new Ship("BattleShip", 4, "X");

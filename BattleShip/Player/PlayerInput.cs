@@ -11,13 +11,13 @@ namespace BattleShip.Player
     {
         public void SendMissile(Player playerToHit)
         {
-            var boardAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
+            var letterAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
             var inputInComplete = true;
             while (inputInComplete)
             {
                 Console.WriteLine("Enter horizontal coordinate (A-J):");
                 var inputXAxis = Console.ReadLine().ToLower();
-                if (!boardAligner.Any(x => x.Item2 == inputXAxis))
+                if (letterAligner.All(x => x.Item2 != inputXAxis))
                 {
                     Console.WriteLine("Bad input, try again");
                     continue;
@@ -48,24 +48,26 @@ namespace BattleShip.Player
 
             if (responseHit)
             {
+                //These fakeships could possibly be named after the response we get back from the server/client.... we do get the name, and 
+                //we could name the fakeships by those names, check if enough squares with that name have been sunk
+                //e.g. 5 fakeships with the name carrier, and then change the status of those squares to sunk
                 selectedSquare.HasShip = true;
                 selectedSquare.Hit = true;
-                var fakeShip = new Ship($"fakeShip{xAxis}{yAxis}",1,"v");
+                var fakeShip = new Ship($"fakeShip{xAxis}{yAxis}", 1, "v");
                 fakeShip.OccupyingSquares.Add(selectedSquare);
-                shipOnSquare = fakeShip;
+                shipOnSquare = fakeShip; //Does this need to be shown?
                 player.ShipList.Add(fakeShip);
                 if (isSunk)
                     fakeShip.IsSunk = true;
-                return (true, "Hit was made");
+                return (true, "Hit was made"); //if we do the above solution then maybe this should be modified slightly to allow the workflow to continue past this
             }
 
 
-            if (selectedSquare.HasShip && shipOnSquare != null && responseHit == false)
+            if (selectedSquare.HasShip && shipOnSquare != null && !responseHit)
             {
                 selectedSquare.Hit = true;
-                shipOnSquare.OccupyingSquares
-                        .SingleOrDefault(x => x.XAxis == selectedSquare.XAxis && x.YAxis == selectedSquare.YAxis).Hit =
-                    true;
+                shipOnSquare.OccupyingSquares.SingleOrDefault(x => x.XAxis == selectedSquare.XAxis && x.YAxis == selectedSquare.YAxis).Hit = true;
+
                 if (CheckIfBoatIsSunk(shipOnSquare))
                 {
                     switch (shipOnSquare.ShipName)
@@ -128,10 +130,7 @@ namespace BattleShip.Player
                     allHit = false;
             }
 
-            if (allHit)
-                ship.IsSunk = true;
-            else
-                ship.IsSunk = false;
+            ship.IsSunk = allHit;
             return allHit;
         }
     }

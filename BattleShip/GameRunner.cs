@@ -23,11 +23,11 @@ namespace BattleShip
             player1 = new Player.Player();
             player2 = new Player.Player();
             //var playerInput = new PlayerInput();
-            
+
             player1.PlayerName = playerName;
             player1.GameBoard = new GameBoard();
             player1.GameBoard.GenerateGameBoard();
-            player1.ShipList = player1.GenerateShips();
+            player1.ShipList = player1.GenerateShipsForPlayer();
             player1.GameBoard.PrintCurrentBoardState(player1);
             Console.WriteLine();
             PlaceShips(player1);
@@ -35,7 +35,7 @@ namespace BattleShip
             Console.WriteLine("Player 1 Gameboard");
             player1.GameBoard.PrintCurrentBoardState(player1);
             player2.GameBoard = new GameBoard();
-            //player2.ShipList = player2.GenerateShips();
+            //player2.ShipList = player2.GenerateShips(); //Don't need to generate ships
             player2.ShipList = new List<Ship>();
             Console.WriteLine("Player 2 Gameboard");
             player2.GameBoard.GenerateGameBoard();
@@ -63,7 +63,7 @@ namespace BattleShip
         }
         public void PlaceShips(Player.Player player)
         {
-            var boardAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
+            var letterAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
 
             Console.WriteLine("Place your ships:");
             foreach (var ship in player.ShipList)
@@ -74,7 +74,7 @@ namespace BattleShip
                 {
                     Console.WriteLine($"Enter start position of {ship.ShipName} (length of {ship.ShipLength}) on the X-axis (A-J)");
                     var inputXAxis = Console.ReadLine().ToLower();
-                    if (!boardAligner.Any(x => x.Item2 == inputXAxis))
+                    if (letterAligner.All(x => x.Item2 != inputXAxis))
                     {
                         Console.WriteLine("Bad input, try again");
                         continue;
@@ -99,9 +99,7 @@ namespace BattleShip
                         Console.WriteLine("Bad input, try again");
                         continue;
                     }
-                    //var inputXAxis = XAxis;
-                    //var inputYAxis = YAxis;
-                    var currentXAxis = boardAligner.SingleOrDefault(x => x.Item2 == inputXAxis);
+                    var currentXAxis = letterAligner.SingleOrDefault(x => x.Item2 == inputXAxis);
 
                     if ((inputYAxis + ship.ShipLength > 10 && alignment.ToLower() == "v") || (currentXAxis.Item1 + ship.ShipLength > 10 && alignment.ToLower() == "h"))
                     {
@@ -119,7 +117,6 @@ namespace BattleShip
                             Console.WriteLine($"{clashingSquare.XAxis}{clashingSquare.YAxis}");
                         }
                         continue;
-                        //Returnera not valid eftersom rutan redan är upptagen
                     }
 
                     isOccupied = false;
@@ -140,13 +137,13 @@ namespace BattleShip
         private List<Square> GetConcernedSquaresForShipPlacement(Player.Player player, string alignment, string inputLetter, int inputNumber, int shipLength)
         {
             var returnListOfSquares = new List<Square>();
-            var boardAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
-            var startSquareCharacter = boardAligner.SingleOrDefault(x => x.Item2 == inputLetter.ToLower());
-            for (int i = 0; i < shipLength; i++)
+            var letterAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
+            var startSquareCharacter = letterAligner.SingleOrDefault(x => x.Item2 == inputLetter.ToLower());
+            for (var i = 0; i < shipLength; i++)
             {
                 if (alignment.ToLower() == "h")
                 {
-                    var nextSquare = boardAligner.SingleOrDefault(x => x.Item1 == startSquareCharacter.Item1 + i);
+                    var nextSquare = letterAligner.SingleOrDefault(x => x.Item1 == startSquareCharacter.Item1 + i);
                     var currentSquare =
                         player.GameBoard.GameSquares.SingleOrDefault(x => int.Parse(x.YAxis.ToString()) == inputNumber && x.XAxis.ToLower() == nextSquare.Item2.ToLower());
                     returnListOfSquares.Add(currentSquare);

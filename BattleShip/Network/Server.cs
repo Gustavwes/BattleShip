@@ -29,9 +29,6 @@ namespace BattleShip.Network
 
         public void StartServer(int port, string hostUsername)
         {
-            //Console.WriteLine("Välkommen till servern");
-            //Console.WriteLine("Ange port att lyssna på:");
-            //var port = int.Parse(Console.ReadLine());
             var game = GameRunner.Instance();
             var gameCommandHandler = new GameCommandHandler();
             StartListen(port);
@@ -55,7 +52,7 @@ namespace BattleShip.Network
                         Console.WriteLine("Started A Loop on Server");
                         while (!firstCommandFromClientIsHello)
                         {
-                            writer.WriteLine("210 BattleShip/1.0");
+                            writer.WriteLine("210 Welcome to BattleShip/1.0");
                             firstCommand = reader.ReadLine();
                             if (firstCommand.Length < 6 && firstCommand.ToLower() != "quit")
                             {
@@ -68,8 +65,7 @@ namespace BattleShip.Network
                                 clientUserName = firstCommand.Split(' ')[1];
                                 game.player2.PlayerName = clientUserName;
                                 firstCommandFromClientIsHello = true;
-                                writer.WriteLine("220 " + hostUsername);
-
+                                writer.WriteLine("220 You have connect to player: " + hostUsername);
                             }
 
                             if (firstCommand.ToLower() == "quit")
@@ -85,6 +81,7 @@ namespace BattleShip.Network
                             {
                                 myTurn = true;
                             }
+
                         writer.WriteLine(responseToSend);
                         }
 
@@ -95,12 +92,11 @@ namespace BattleShip.Network
                             Console.WriteLine("Your turn, enter command:");
                             myCommand = Console.ReadLine();
                             writer.WriteLine(myCommand);
-                            responseFromClient = reader.ReadLine(); // Get if its a hit or miss
+                            responseFromClient = reader.ReadLine(); // Get if its a hit or miss or need to write again
                             Console.WriteLine(responseFromClient);
                             gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
                             //gameCommandHandler.CommandSorter(responseFromClient);
                             myTurn = false;
-
                         }
                         else
                         {
@@ -109,7 +105,7 @@ namespace BattleShip.Network
 
                             var responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
 
-                            writer.WriteLine(responseToSend);
+                            writer.WriteLine(responseToSend); //need a bool to check if turn is over (e.g. invalid command received from client
                             myTurn = true;
                         }
                         if (string.Equals(myCommand, "EXIT", StringComparison.InvariantCultureIgnoreCase))
@@ -117,6 +113,7 @@ namespace BattleShip.Network
                             writer.WriteLine("BYE BYE");
                             break;
                         }
+
                         game.PrintBothGameBoards();
 
                     }
