@@ -88,7 +88,7 @@ namespace BattleShip.Network
                                 myCommand = Console.ReadLine();
                                 writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
-                                myResponse = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
+                                var gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
                                 //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
                                 myTurn = false;
                             }
@@ -97,6 +97,7 @@ namespace BattleShip.Network
                                 Console.WriteLine("Waiting for opponent move...");
                                 responseFromServer = reader.ReadLine();
                                 myResponse = gameCommandHandler.CommandSorter(responseFromServer);
+                                
                                 writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
                                 myTurn = true;
 

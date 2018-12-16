@@ -59,15 +59,22 @@ namespace BattleShip.Player
                 player.ShipList.Add(fakeShip);
                 if (isSunk)
                     fakeShip.IsSunk = true;
-                return (true, "Hit was made"); //if we do the above solution then maybe this should be modified slightly to allow the workflow to continue past this
+                hitShip = (true, "Hit was made"); //if we do the above solution then maybe this should be modified slightly to allow the workflow to continue past this
             }
 
+            if (!responseHit && !isSunk)
+            {
+                selectedSquare.Hit = true;
+                hitShip = (false, "230 Miss!");
+
+            }
 
             if (selectedSquare.HasShip && shipOnSquare != null && !responseHit)
             {
                 selectedSquare.Hit = true;
                 shipOnSquare.OccupyingSquares.SingleOrDefault(x => x.XAxis == selectedSquare.XAxis && x.YAxis == selectedSquare.YAxis).Hit = true;
 
+                
                 if (CheckIfBoatIsSunk(shipOnSquare))
                 {
                     switch (shipOnSquare.ShipName)
@@ -132,6 +139,11 @@ namespace BattleShip.Player
 
             ship.IsSunk = allHit;
             return allHit;
+        }
+
+        public bool CheckIfGameOver(Player player)
+        {
+            return player.CheckIfAllShipsSunk() || false;
         }
     }
 }

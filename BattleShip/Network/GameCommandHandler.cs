@@ -9,15 +9,15 @@ namespace BattleShip.Network
 {
     class GameCommandHandler
     {
-        
+
         //bool not removed
         public string CommandSorter(string command)
         {
-            
+
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
-   
+
             if (command == "start")
             {
                 return StartGame(game.player1.PlayerName, game.player2.PlayerName);
@@ -25,43 +25,61 @@ namespace BattleShip.Network
 
             if (command.Split(' ')[0] == "fire")
             {
-               // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
+                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
                 var coordinates = command.Split(' ')[1];
                 var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                    game.player1, false,false);
-                
+                    game.player1, false, false);
+
+                if (game.player1.CheckIfAllShipsSunk())
+                {
+                    hitMessage.Item2 = "260 You Win!";
+                }
+
                 return hitMessage.Item2;
-                
+
             }
             return "";
         }
 
-        public string ResponseSorter(string response, string coordinates)
+        public (string, bool) ResponseSorter(string response, string coordinates)
         {
             var game = GameRunner.Instance();
             var playerInput = new PlayerInput();
             var commandStatusCode = response.Split(' ')[0];
             coordinates = coordinates.Split(' ')[1];
+            var gameStatus = ($"Your turn {game.player2.PlayerName}", false);
             // TODO: to implement updating of opponent board
             if (int.TryParse(commandStatusCode, out int statusCode))
             {
+
+                if (statusCode == 230)
+                {
+                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                        game.player2, false, false);
+                }
                 if (statusCode > 240 && statusCode < 250)
                 {
-                   playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                        game.player2, true, false);
+                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                         game.player2, true, false);
                 }
                 if (statusCode > 250 && statusCode < 260)
                 {
                     playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
                         game.player2, true, true);
                 }
-           }
 
-            return "Your turn " + game.player2.PlayerName;
-            
+                if (statusCode == 260)
+                {
+                    gameStatus.Item2 = true;
+                }
+            }
+
+
+            return gameStatus;
+
         }
 
-       
+
         public string StartGame(string myUserName, string otherPlayerUsername)
         {
             var random = new Random();
