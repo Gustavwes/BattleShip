@@ -99,7 +99,7 @@ namespace BattleShip.Game_Board
         public Square GetSquare(string inputXAxis, int inputYAxis, Player.Player player)
         {
             return player.GameBoard.GameSquares.SingleOrDefault(x =>
-                x.XAxis == inputXAxis && x.YAxis == inputYAxis);
+                x.XAxis.ToLower() == inputXAxis && x.YAxis == inputYAxis);
         }
     }
 }
