@@ -47,7 +47,7 @@ namespace BattleShip.Network
             {
                 if (statusCode > 240 && statusCode < 250)
                 {
-                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                   playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
                         game.player2, true, false);
                 }
                 if (statusCode > 250 && statusCode < 260)
@@ -55,7 +55,7 @@ namespace BattleShip.Network
                     playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
                         game.player2, true, true);
                 }
-            }
+           }
 
             return "Your turn " + game.player2.PlayerName;
             
