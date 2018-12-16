@@ -34,6 +34,7 @@ namespace BattleShip.Game_Board
 
         public void PrintCurrentBoardState(Player.Player player)
         {
+            Console.WriteLine($"{player.PlayerName ?? "Player 2"} Game board");
             var XAxis = "ABCDEFGHIJ";
             Console.Write("   ");
             for (int i = 0; i < 10; i++)
@@ -69,27 +70,28 @@ namespace BattleShip.Game_Board
             foreach (var square in listOfSquares)
             {
                 var shipOnSquare = square.GetShipOnSquare(player); 
+                //could possibly do somthing akin to <==> when drawing ships based on orientation if we could be bothered
                 if (square.HasShip && square.Hit == false)
                 {
-                    Console.Write($"|O|");
+                    Console.Write($"|O ");
                     continue;
                 }
 
                 if (square.HasShip && square.Hit)
                 {
                     if (shipOnSquare.IsSunk || hasSunk)
-                        Console.Write("|S|");
+                        Console.Write("|S ");
                     else
                     {
-                        Console.Write($"|X|");
+                        Console.Write($"|X ");
                     }
                     continue;
                 }
                 if (square.HasShip == false && square.Hit)
-                    Console.Write($"|M|");
+                    Console.Write($"|M ");
                 else
                 {
-                    Console.Write("| |");
+                    Console.Write("|  ");
                 }
             }
             Console.WriteLine();
@@ -97,7 +99,7 @@ namespace BattleShip.Game_Board
         public Square GetSquare(string inputXAxis, int inputYAxis, Player.Player player)
         {
             return player.GameBoard.GameSquares.SingleOrDefault(x =>
-                x.XAxis.ToLower() == inputXAxis && x.YAxis == inputYAxis);
+                x.XAxis == inputXAxis && x.YAxis == inputYAxis);
         }
     }
 }

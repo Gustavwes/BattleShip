@@ -54,25 +54,24 @@ namespace BattleShip.Network
                         {
                             writer.WriteLine("210 Welcome to BattleShip/1.0");
                             firstCommand = reader.ReadLine();
-                            if (firstCommand.Length < 6 && firstCommand.ToLower() != "quit")
-                            {
-                                writer.WriteLine("500 Syntax Error");
-                            }
-
-                            if (firstCommand.Split(' ')[0].ToLower() == "helo" ||
-                                firstCommand.Split(' ')[0].ToLower() == "hello")
-                            {
-                                clientUserName = firstCommand.Split(' ')[1];
-                                game.player2.PlayerName = clientUserName;
-                                firstCommandFromClientIsHello = true;
-                                writer.WriteLine("220 You have connect to player: " + hostUsername);
-                            }
-
                             if (firstCommand.ToLower() == "quit")
                             {
                                 writer.WriteLine("270 Hasta la vista");
                                 break;
                             }
+                            if (!firstCommand.ToLower().Contains("hello") || !firstCommand.ToLower().Contains("helo"))
+                            {
+                                writer.WriteLine("500 Syntax Error");
+                            }
+
+                            if (firstCommand.ToLower().Contains("helo") || firstCommand.ToLower().Contains("hello"))
+                            {
+                                clientUserName = firstCommand.Split(' ')[1];
+                                game.player2.PlayerName = clientUserName;
+                                firstCommandFromClientIsHello = true;
+                                writer.WriteLine("220 " + hostUsername);
+                            }
+
                             var command = reader.ReadLine();
                             Console.WriteLine($"Recieved: {command}");
                             var responseToSend = gameCommandHandler.CommandSorter(command);
@@ -94,8 +93,8 @@ namespace BattleShip.Network
                             writer.WriteLine(myCommand);
                             responseFromClient = reader.ReadLine(); // Get if its a hit or miss or need to write again
                             Console.WriteLine(responseFromClient);
-                            gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
-                            //gameCommandHandler.CommandSorter(responseFromClient);
+                            //Can possibly modify the SendMissile() in PlayerInput to accept all commands when the game starts
+                            gameCommandHandler.ResponseSorter(responseFromClient.ToLower(), myCommand.ToLower());
                             myTurn = false;
                         }
                         else
@@ -103,7 +102,7 @@ namespace BattleShip.Network
                             Console.WriteLine("Waiting for opponent move...");
                             responseFromClient = reader.ReadLine();
 
-                            var responseToSend = gameCommandHandler.CommandSorter(responseFromClient);
+                            var responseToSend = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
 
                             writer.WriteLine(responseToSend); //need a bool to check if turn is over (e.g. invalid command received from client
                             myTurn = true;

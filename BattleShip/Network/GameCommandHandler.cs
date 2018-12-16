@@ -18,12 +18,12 @@ namespace BattleShip.Network
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
    
-            if (command.ToLower() == "start")
+            if (command == "start")
             {
                 return StartGame(game.player1.PlayerName, game.player2.PlayerName);
             }
 
-            if (command.Split(' ')[0].ToLower() == "fire")
+            if (command.Split(' ')[0] == "fire")
             {
                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
                 var coordinates = command.Split(' ')[1];

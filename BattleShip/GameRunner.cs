@@ -32,12 +32,10 @@ namespace BattleShip
             Console.WriteLine();
             PlaceShips(player1);
             Console.Clear();
-            Console.WriteLine("Player 1 Gameboard");
             player1.GameBoard.PrintCurrentBoardState(player1);
             player2.GameBoard = new GameBoard();
             //player2.ShipList = player2.GenerateShips(); //Don't need to generate ships
             player2.ShipList = new List<Ship>();
-            Console.WriteLine("Player 2 Gameboard");
             player2.GameBoard.GenerateGameBoard();
             player2.GameBoard.PrintCurrentBoardState(player2);
 
@@ -70,13 +68,22 @@ namespace BattleShip
             {
                 var isOccupied = true; //
                 var squareList = new List<Square>();
+                var inputXAxis = "";
                 while (isOccupied)
                 {
                     Console.WriteLine($"Enter start position of {ship.ShipName} (length of {ship.ShipLength}) on the X-axis (A-J)");
-                    var inputXAxis = Console.ReadLine().ToLower();
+                    try
+                    {
+                        inputXAxis = Console.ReadLine().ToLower();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Something went wrong, please try again");
+                        continue;
+                    }
                     if (letterAligner.All(x => x.Item2 != inputXAxis))
                     {
-                        Console.WriteLine("Bad input, try again");
+                        Console.WriteLine("Outside board parameters, try again");
                         continue;
                     }
 
