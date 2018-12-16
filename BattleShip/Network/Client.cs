@@ -46,10 +46,10 @@ namespace BattleShip.Network
                     {
                         while (!firstReplyIsCorrect)
                         {
-                            Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
-                            Console.WriteLine("Start the game by writing Hello");
-                            Console.WriteLine(reader.ReadLine());
                             var firstReply = "";
+                            Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
+                            Console.WriteLine(reader.ReadLine());
+                            Console.WriteLine("Start the game by writing Hello");
                             var firstCommand = Console.ReadLine() + " " + userName;
                             writer.WriteLine(firstCommand);
                             firstReply = reader.ReadLine();
