@@ -81,7 +81,7 @@ namespace BattleShip.Network
                                 myTurn = true;
                             }
 
-                        writer.WriteLine(responseToSend);
+                            writer.WriteLine(responseToSend);
                         }
 
 
@@ -105,6 +105,7 @@ namespace BattleShip.Network
                             var responseToSend = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
 
                             writer.WriteLine(responseToSend); //need a bool to check if turn is over (e.g. invalid command received from client
+
                             myTurn = true;
                         }
                         if (string.Equals(myCommand, "EXIT", StringComparison.InvariantCultureIgnoreCase))
