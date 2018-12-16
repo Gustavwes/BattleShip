@@ -15,7 +15,7 @@ namespace BattleShip.Player
         public List<Ship> GenerateShipsForPlayer()
         {
             var carrier = new Ship("Carrier", 5, "X");
-            var battleShip = new Ship("BattleShip", 4, "X");
+            var battleShip = new Ship("Battleship", 4, "X");
             var destroyer = new Ship("Destroyer", 3, "X");
             var submarine = new Ship("Submarine", 3, "X");
             var patrolBoat = new Ship("Patrol Boat", 2, "X");
