@@ -59,7 +59,7 @@ namespace BattleShip.Network
                                 writer.WriteLine("270 Hasta la vista");
                                 break;
                             }
-                            if (!firstCommand.ToLower().Contains("hello") || !firstCommand.ToLower().Contains("helo"))
+                            if (!firstCommand.ToLower().Contains("hello") && !firstCommand.ToLower().Contains("helo"))
                             {
                                 writer.WriteLine("500 Syntax Error");
                             }
@@ -72,7 +72,7 @@ namespace BattleShip.Network
                                 writer.WriteLine("220 " + hostUsername);
                             }
 
-                            var command = reader.ReadLine();
+                            var command = reader.ReadLine().ToLower();
                             Console.WriteLine($"Recieved: {command}");
                             var responseToSend = gameCommandHandler.CommandSorter(command);
 
