@@ -34,6 +34,8 @@ namespace BattleShip.Network
             StartListen(port);
             var myTurn = false;
             var responseFromClient = "";
+            var gameFlowHelper = new GameFlowHelper();
+            var gameStatus = ("", true);
             while (true)
             {
                 Console.WriteLine("Waiting for player to connect...");
@@ -76,9 +78,9 @@ namespace BattleShip.Network
                             Console.WriteLine($"Recieved: {command}");
                             var responseToSend = gameCommandHandler.CommandSorter(command);
 
-                            if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
+                            if (string.Equals(responseToSend.Item1.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                myTurn = true;
+                                gameFlowHelper.StillMyTurn = true;
                             }
 
                             writer.WriteLine(responseToSend);
@@ -86,27 +88,48 @@ namespace BattleShip.Network
 
 
                         var myCommand = "";
-                        if (myTurn)
+                        if (gameFlowHelper.StillMyTurn)
                         {
+                            //Console.WriteLine("Your turn, enter command:");
+                            //myCommand = Console.ReadLine();
+                            //writer.WriteLine(myCommand);
+                            //responseFromClient = reader.ReadLine(); // Get if its a hit or miss or need to write again
+                            //Console.WriteLine(responseFromClient);
+                            ////Can possibly modify the SendMissile() in PlayerInput to accept all commands when the game starts
+                            //gameCommandHandler.ResponseSorter(responseFromClient.ToLower(), myCommand.ToLower());
+                            //myTurn = false;
                             Console.WriteLine("Your turn, enter command:");
                             myCommand = Console.ReadLine();
                             writer.WriteLine(myCommand);
-                            responseFromClient = reader.ReadLine(); // Get if its a hit or miss or need to write again
-                            Console.WriteLine(responseFromClient);
-                            //Can possibly modify the SendMissile() in PlayerInput to accept all commands when the game starts
-                            gameCommandHandler.ResponseSorter(responseFromClient.ToLower(), myCommand.ToLower());
-                            myTurn = false;
+                            responseFromClient = reader.ReadLine();
+                            gameFlowHelper.Last3Responses.Add(responseFromClient); //add last response
+                            gameFlowHelper.CheckForRepeatedErrors();
+                            gameFlowHelper.ResponsesAndCommands.Add(myCommand);
+                            gameFlowHelper.ResponsesAndCommands.Add(responseFromClient);
+                            gameStatus = gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
+                            //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
+                            if (!gameStatus.Item2)
+                                gameFlowHelper.StillMyTurn = false;
                         }
                         else
                         {
+                            //Console.WriteLine("Waiting for opponent move...");
+                            //responseFromClient = reader.ReadLine();
+
+                            //var responseToSend = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
+
+                            //writer.WriteLine(responseToSend); //need a bool to check if turn is over (e.g. invalid command received from client
+
+                            //myTurn = true;
                             Console.WriteLine("Waiting for opponent move...");
                             responseFromClient = reader.ReadLine();
-
-                            var responseToSend = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
-
-                            writer.WriteLine(responseToSend); //need a bool to check if turn is over (e.g. invalid command received from client
-
-                            myTurn = true;
+                            gameStatus = gameCommandHandler.CommandSorter(responseFromClient);
+                            //here we need gamestatus to know if their turn is over or if we need to continue our turn (loop around this)
+                            writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
+                            gameFlowHelper.ResponsesAndCommands.Add(responseFromClient);
+                            gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
+                            if (gameStatus.Item2)
+                                gameFlowHelper.StillMyTurn = true;
                         }
                         if (string.Equals(myCommand, "EXIT", StringComparison.InvariantCultureIgnoreCase))
                         {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace BattleShip.Network
 {
@@ -24,7 +25,7 @@ namespace BattleShip.Network
             var gameCommandHandler = new GameCommandHandler();
             var game = GameRunner.Instance();
             StartListen(portNumber);
-
+            var gameFlowHelper = new GameFlowHelper();
             while (true)
             {
                 Console.WriteLine("Waiting to connect");
@@ -66,44 +67,53 @@ namespace BattleShip.Network
                                 // Skicka text
                                 writer.WriteLine(command);
                             }
-                        if (!client.Connected) break;
+                            if (!client.Connected) break;
 
-                        responseFromServer = reader.ReadLine();
-                        Console.WriteLine($"Svar: {responseFromServer}");
+                            responseFromServer = reader.ReadLine();
+                            Console.WriteLine($"Svar: {responseFromServer}");
                             if (string.Equals(responseFromServer.Split(' ')[0], "221", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                myTurn = true;
+                                gameFlowHelper.StillMyTurn = true;
                             }
 
                             Console.WriteLine(responseFromServer);
                         }
 
-
+                        var gameStatus = ("", true);
                         // Läs minst en rad test
                         do
                         {
-                            if (myTurn)
+                            if (gameFlowHelper.StillMyTurn)
                             {
                                 Console.WriteLine("Your turn, enter command:");
                                 myCommand = Console.ReadLine();
                                 writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
-                                var gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
+                                gameFlowHelper.Last3Responses.Add(responseFromServer); //add last response
+                                gameFlowHelper.CheckForRepeatedErrors();
+                                gameFlowHelper.ResponsesAndCommands.Add(myCommand);
+                                gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
+                                gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
                                 //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
-                                myTurn = false;
+                                if (!gameStatus.Item2)
+                                    gameFlowHelper.StillMyTurn = false;
                             }
                             else
                             {
                                 Console.WriteLine("Waiting for opponent move...");
                                 responseFromServer = reader.ReadLine();
-                                myResponse = gameCommandHandler.CommandSorter(responseFromServer);
-                                
-                                writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
-                                myTurn = true;
+                                gameStatus = gameCommandHandler.CommandSorter(responseFromServer);
+                                //here we need gamestatus to know if their turn is over or if we need to continue our turn (loop around this)
+                                writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
+                                gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
+                                gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
+                                if (gameStatus.Item2)
+                                    gameFlowHelper.StillMyTurn = true;
 
                             }
                             game.PrintBothGameBoards();
-                            
+                            gameFlowHelper.PrintLast3Responses();
+
                         } while (networkStream.DataAvailable);
 
                     }
@@ -113,8 +123,7 @@ namespace BattleShip.Network
             }
         }
 
-
-
+        
 
         static void StartListen(int port)
         {

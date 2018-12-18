@@ -11,9 +11,12 @@ namespace BattleShip.Player
     {
         public void SendMissile(Player playerToHit)
         {
+            //The advantage to using this when we send a message is that could make sure we never send faulty messages. However
+            //It does not help us to take care of incoming messages.
+
             var letterAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
-            var inputInComplete = true;
-            while (inputInComplete)
+            var inputCorrect = false;
+            while (!inputCorrect)
             {
                 Console.WriteLine("Enter horizontal coordinate (A-J):");
                 var inputXAxis = Console.ReadLine().ToLower();
@@ -36,7 +39,7 @@ namespace BattleShip.Player
 
                 var selectedSquare = playerToHit.GameBoard.GetSquare(inputXAxis, inputYAxis, playerToHit);
                 selectedSquare.Hit = true;
-                inputInComplete = false;
+                inputCorrect = true;
             }
 
         }

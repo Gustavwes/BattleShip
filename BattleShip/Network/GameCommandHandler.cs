@@ -11,7 +11,7 @@ namespace BattleShip.Network
     {
 
         //bool not removed
-        public string CommandSorter(string command)
+        public (string,bool) CommandSorter(string command)
         {
 
             var playerInput = new PlayerInput();
@@ -20,7 +20,7 @@ namespace BattleShip.Network
 
             if (command == "start")
             {
-                return StartGame(game.player1.PlayerName, game.player2.PlayerName);
+                return (StartGame(game.player1.PlayerName, game.player2.PlayerName), true);
             }
 
             if (command.Split(' ')[0] == "fire")
@@ -35,10 +35,10 @@ namespace BattleShip.Network
                     hitMessage.Item2 = "260 You Win!";
                 }
 
-                return hitMessage.Item2;
+                return (hitMessage.Item2, hitMessage.Item1);
 
             }
-            return "";
+            return ("500 Syntax error",false);
         }
 
         public (string, bool) ResponseSorter(string response, string coordinates)
@@ -72,6 +72,13 @@ namespace BattleShip.Network
                 {
                     gameStatus.Item2 = true;
                 }
+
+                if (statusCode == 500)
+                    gameStatus.Item2 = false;
+            }
+            else
+            {
+                
             }
 
 
