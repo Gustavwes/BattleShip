@@ -68,7 +68,7 @@ namespace BattleShip.Player
             if (!responseHit && !isSunk)
             {
                 selectedSquare.Hit = true;
-                hitShip = (false, "230 Miss!");
+                hitShip = (true, "230 Miss!");
 
             }
 
