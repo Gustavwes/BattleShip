@@ -98,6 +98,7 @@ namespace BattleShip.Network
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
+                                
                                 //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
                                 if (!gameStatus.Item2)
                                     gameFlowHelper.StillMyTurn = false;

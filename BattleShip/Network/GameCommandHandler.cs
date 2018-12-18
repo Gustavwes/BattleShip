@@ -62,7 +62,7 @@ namespace BattleShip.Network
             {
                 coordinates = coordinates.Split(' ')[1];
             }
-            var gameStatus = ($"Your turn {game.player2.PlayerName}", false);
+            var gameStatus = ($"Your turn {game.player2.PlayerName}", true);
             // TODO: to implement updating of opponent board
             if (int.TryParse(commandStatusCode, out int statusCode))
             {
