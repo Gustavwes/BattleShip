@@ -28,6 +28,11 @@ namespace BattleShip
             player1.GameBoard = new GameBoard();
             player1.GameBoard.GenerateGameBoard();
             //player1.ShipList = player1.GenerateShipsForPlayer();
+
+            //Tests
+            player1.ShipList = new List<Ship>();
+            player1.ShipList.Add(new Ship("skitskepp", 1, ""));
+
             player1.GameBoard.PrintCurrentBoardState(player1);
             Console.WriteLine();
             PlaceShips(player1);
@@ -39,8 +44,7 @@ namespace BattleShip
             player2.GameBoard.GenerateGameBoard();
             player2.GameBoard.PrintCurrentBoardState(player2);
 
-            //Tests
-            player1.ShipList.Add(new Ship("skitskepp",1,""));
+           
             
             //player2.GameBoard.GameSquares[0].HasShip = true;
             //player2.GameBoard.GameSquares[0].Hit=true;
