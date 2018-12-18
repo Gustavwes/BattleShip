@@ -69,13 +69,14 @@ namespace BattleShip.Network
                         game.player2, true, true);
                 }
 
+                gameStatus.Item2 = false;
                 if (statusCode == 260)
                 {
                     gameStatus.Item2 = true;
                 }
 
                 if (statusCode == 500)
-                    gameStatus.Item2 = false;
+                    gameStatus.Item2 = true;
             }
             else
             {
