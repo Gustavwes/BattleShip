@@ -58,8 +58,8 @@ namespace BattleShip.Network
                     var firstCommand = "";
                     while (client.Connected)
                     {
-                        Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
-                        Console.WriteLine("Started A Loop on Server");
+                        //Console.WriteLine($"Player has connected with ip: {client.Client.RemoteEndPoint}!");
+                        //Console.WriteLine("Started A Loop on Server");
                         while (!firstCommandFromClientIsHello)
                         {
                             writer.WriteLine("210 BATTLESHIP/1.0");

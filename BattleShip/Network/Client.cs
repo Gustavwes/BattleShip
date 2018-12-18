@@ -50,14 +50,14 @@ namespace BattleShip.Network
                         networkStream.Close();
                         break;
                     }
-                    Console.WriteLine("Started A Loop on Client");
+                    //Console.WriteLine("Started A Loop on Client");
                     var firstReplyIsCorrect = false;
                     while (client.Connected)
                     {
                         while (!firstReplyIsCorrect)
                         {
                             var firstReply = "";
-                            Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
+                            //Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
                             Console.WriteLine(reader.ReadLine());
                             Console.WriteLine("Start the game by writing HELLO");
                             var firstCommand = Console.ReadLine() + " " + userName;
