@@ -76,9 +76,9 @@ namespace BattleShip.Network
 
                             var command = reader.ReadLine().ToLower();
                             Console.WriteLine($"Recieved: {command}");
-                            var responseToSend = gameCommandHandler.CommandSorter(command);
+                            var responseToSend = gameCommandHandler.CommandSorter(command).Item1;
 
-                            if (string.Equals(responseToSend.Item1.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
+                            if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 gameFlowHelper.StillMyTurn = true;
                             }
