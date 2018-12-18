@@ -111,7 +111,7 @@ namespace BattleShip.Network
                         gameStatus.Item2 = true;
                     }
 
-                    if (statusCode == 500 || statusCode == 501 || hitResponse.Item2.Contains("501"))
+                    if (statusCode == 500 || statusCode == 501 || hitResponse.Item2.Contains("501") || hitResponse.Item2.Contains("500"))
                         gameStatus.Item2 = true;
                 }
 
