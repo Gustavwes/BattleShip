@@ -115,7 +115,7 @@ namespace BattleShip.Network
                                 }
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
-                                gameFlowHelper.Last3Responses.Add(responseFromServer);
+                                //gameFlowHelper.Last3Responses.Add(responseFromServer);
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
                                 if (gameStatus.Item1 == "260")
                                 {
