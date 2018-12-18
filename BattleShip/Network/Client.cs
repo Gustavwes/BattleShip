@@ -59,7 +59,7 @@ namespace BattleShip.Network
                             var firstReply = "";
                             Console.WriteLine($"Connected to host at ip: {client.Client.RemoteEndPoint}");
                             Console.WriteLine(reader.ReadLine());
-                            Console.WriteLine("Start the game by writing Hello");
+                            Console.WriteLine("Start the game by writing HELLO");
                             var firstCommand = Console.ReadLine() + " " + userName;
                             writer.WriteLine(firstCommand);
                             firstReply = reader.ReadLine();
@@ -68,7 +68,7 @@ namespace BattleShip.Network
                                 Console.WriteLine($"{firstReply}");
                                 game.player2.PlayerName = firstReply.Split(' ')[1];
                                 firstReplyIsCorrect = true;
-                                Console.WriteLine("Enter Start to start: ");
+                                Console.WriteLine("Enter START to start: ");
                                 var startCommand = Console.ReadLine();
 
                                 if (startCommand.ToUpper() == "QUIT")
