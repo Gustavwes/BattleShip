@@ -33,9 +33,9 @@ namespace BattleShip.Network
                 return (returnString, true);
             }
 
-            var fireCoordinates = GetPositionFromFireCommand(command);
             if (command.Split(' ')[0].ToLower() == "fire")
             {
+                var fireCoordinates = GetPositionFromFireCommand(command);
                 try
                 {
                     var coordinates = command.Split(' ')[1].ToLower();
@@ -75,36 +75,36 @@ namespace BattleShip.Network
             }
             var gameStatus = ($"Your turn {game.player2.PlayerName}", true);
             // TODO: to implement updating of opponent board
+            if (!String.IsNullOrWhiteSpace(coordinates))
 
-            var fireCoordinates = GetPositionFromFireCommand(coordinates);
-            if (int.TryParse(commandStatusCode, out int statusCode))
-            {
+                if (int.TryParse(commandStatusCode, out int statusCode))
+                {
+                    var fireCoordinates = GetPositionFromFireCommand(coordinates);
+                    if (statusCode == 230)
+                    {
+                        playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
+                            game.player2, false, false);
+                    }
+                    if (statusCode > 240 && statusCode < 250)
+                    {
+                        playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
+                             game.player2, true, false);
+                    }
+                    if (statusCode > 250 && statusCode < 260)
+                    {
+                        playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
+                            game.player2, true, true);
+                    }
 
-                if (statusCode == 230)
-                {
-                    playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
-                        game.player2, false, false);
-                }
-                if (statusCode > 240 && statusCode < 250)
-                {
-                    playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
-                         game.player2, true, false);
-                }
-                if (statusCode > 250 && statusCode < 260)
-                {
-                    playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
-                        game.player2, true, true);
-                }
+                    gameStatus.Item2 = false;
+                    if (statusCode == 260)
+                    {
+                        gameStatus.Item2 = true;
+                    }
 
-                gameStatus.Item2 = false;
-                if (statusCode == 260)
-                {
-                    gameStatus.Item2 = true;
+                    if (statusCode == 500 || statusCode == 501)
+                        gameStatus.Item2 = true;
                 }
-
-                if (statusCode == 500 || statusCode == 501)
-                    gameStatus.Item2 = true;
-            }
 
             return gameStatus;
 
