@@ -138,6 +138,7 @@ namespace BattleShip.Network
                         }
 
                         game.PrintBothGameBoards();
+                        gameFlowHelper.PrintLast3Responses();
 
                     }
                 }
