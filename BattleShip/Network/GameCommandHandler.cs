@@ -39,7 +39,7 @@ namespace BattleShip.Network
                 try
                 {
                     var coordinates = command.Split(' ')[1].ToLower();
-                    var hitMessage = playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
+                    var hitMessage = playerInput.ReceiveHit(fireCoordinates.Item1, fireCoordinates.Item2,
                         game.player1, false, false);
 
                     if (game.player1.CheckIfAllShipsSunk())
@@ -67,33 +67,43 @@ namespace BattleShip.Network
             if (commandStatusCode == "270")
                 return ("270", false);
             if (commandStatusCode == "260")
-                return ("270", false);
+                return ("260", false);
 
             if (coordinates.Split(' ').Length > 1)
             {
                 coordinates = coordinates.Split(' ')[1];
             }
             var gameStatus = ($"Your turn {game.player2.PlayerName}", true);
+            var hitResponse = (false,"");
             // TODO: to implement updating of opponent board
             if (!String.IsNullOrWhiteSpace(coordinates))
 
                 if (int.TryParse(commandStatusCode, out int statusCode))
                 {
-                    var fireCoordinates = GetPositionFromFireCommand("fire " + coordinates);
-                    if (statusCode == 230)
+                    Tuple<string, int> fireCoordinates;
+                    try
                     {
-                        playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
-                            game.player2, false, false);
+                        fireCoordinates = GetPositionFromFireCommand("fire " + coordinates);
+
+                        if (statusCode == 230)
+                        {
+                            hitResponse = playerInput.ReceiveHit(fireCoordinates.Item1, fireCoordinates.Item2,
+                                game.player2, false, false);
+                        }
+                        if (statusCode > 240 && statusCode < 250)
+                        {
+                            hitResponse = playerInput.ReceiveHit(fireCoordinates.Item1, fireCoordinates.Item2,
+                                 game.player2, true, false);
+                        }
+                        if (statusCode > 250 && statusCode < 260)
+                        {
+                            hitResponse = playerInput.ReceiveHit(fireCoordinates.Item1, fireCoordinates.Item2,
+                                game.player2, true, true);
+                        }
                     }
-                    if (statusCode > 240 && statusCode < 250)
+                    catch (Exception e)
                     {
-                        playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
-                             game.player2, true, false);
-                    }
-                    if (statusCode > 250 && statusCode < 260)
-                    {
-                        playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
-                            game.player2, true, true);
+                        statusCode = 500;
                     }
 
                     gameStatus.Item2 = false;
@@ -102,7 +112,7 @@ namespace BattleShip.Network
                         gameStatus.Item2 = true;
                     }
 
-                    if (statusCode == 500 || statusCode == 501)
+                    if (statusCode == 500 || statusCode == 501 || hitResponse.Item2.Contains("501"))
                         gameStatus.Item2 = true;
                 }
 
@@ -110,13 +120,14 @@ namespace BattleShip.Network
 
         }
 
-        public (string character, int number) GetPositionFromFireCommand(string command)
+        public Tuple<string,int> GetPositionFromFireCommand(string command)
         {
             var parts = command.Split(' ');
             var character = parts[1][0].ToString();
             var number = int.Parse(parts[1].Substring(1));
-
-            return (character, number);
+            Tuple<string, int> returnTuple = Tuple.Create(character,number);
+           
+            return returnTuple;
         }
 
         public string StartGame(string myUserName, string otherPlayerUsername)

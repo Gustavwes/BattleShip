@@ -50,6 +50,10 @@ namespace BattleShip.Player
             var selectedSquare = player.GameBoard.GetSquare(xAxis.ToLower(), yAxis, player);
             var shipOnSquare = selectedSquare.GetShipOnSquare(player);
             var game = GameRunner.Instance();
+            if (selectedSquare.Hit)
+            {
+                return (true, "501 Already Hit");
+            }
             if (responseHit)
             {
                 //These fakeships could possibly be named after the response we get back from the server/client.... we do get the name, and 

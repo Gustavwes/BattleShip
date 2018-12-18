@@ -100,15 +100,7 @@ namespace BattleShip.Network
                         var myCommand = "";
                         if (gameFlowHelper.StillMyTurn)
                         {
-                            //Console.WriteLine("Your turn, enter command:");
-                            //myCommand = Console.ReadLine();
-                            //writer.WriteLine(myCommand);
-                            //responseFromClient = reader.ReadLine(); // Get if its a hit or miss or need to write again
-                            //Console.WriteLine(responseFromClient);
-                            ////Can possibly modify the SendMissile() in PlayerInput to accept all commands when the game starts
-                            //gameCommandHandler.ResponseSorter(responseFromClient.ToLower(), myCommand.ToLower());
-                            //myTurn = false;
-                            Console.WriteLine("Your turn, enter command:");
+                           Console.WriteLine("Your turn, enter command:");
                             myCommand = Console.ReadLine();
                             writer.WriteLine(myCommand);
                             responseFromClient = reader.ReadLine();
@@ -123,29 +115,26 @@ namespace BattleShip.Network
                                 break;
                             }
                             gameStatus = gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
+                            if (gameStatus.Item1.Contains("260"))
+                            {
+                                writer.WriteLine("270 BYE BYE");
+                                client.Dispose();
+                                gameOver = true;
+                                break;
+                            }
                             if (gameStatus.Item1 == "270")
                             {
                                 break;
                             }
-                            //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
                             if (!gameStatus.Item2)
                                 gameFlowHelper.StillMyTurn = false;
                         }
                         else
                         {
-                            //Console.WriteLine("Waiting for opponent move...");
-                            //responseFromClient = reader.ReadLine();
-
-                            //var responseToSend = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
-
-                            //writer.WriteLine(responseToSend); //need a bool to check if turn is over (e.g. invalid command received from client
-
-                            //myTurn = true;
                             Console.WriteLine("Waiting for opponent move...");
                             responseFromClient = reader.ReadLine();
                             gameStatus = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
-                            //here we need gamestatus to know if their turn is over or if we need to continue our turn (loop around this)
-                            writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
+                            writer.WriteLine(gameStatus.Item1); 
                             gameFlowHelper.Last3Responses.Add(responseFromClient);
                             gameFlowHelper.ResponsesAndCommands.Add(responseFromClient);
                             gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
@@ -173,13 +162,6 @@ namespace BattleShip.Network
                             if (gameStatus.Item2)
                                 gameFlowHelper.StillMyTurn = true;
                         }
-                        //if (string.Equals(myCommand, "QUIT", StringComparison.InvariantCultureIgnoreCase))
-                        //{
-                        //    writer.WriteLine("270 BYE BYE");
-                        //    client.Dispose();
-                        //    gameOver = true;
-                        //    break;
-                        //}
 
                         game.PrintBothGameBoards();
                         gameFlowHelper.PrintLast3Responses();
