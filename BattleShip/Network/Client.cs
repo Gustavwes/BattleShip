@@ -108,20 +108,23 @@ namespace BattleShip.Network
                                 gameFlowHelper.Last3Responses.Add(responseFromServer); //add last response
                                 if (gameFlowHelper.CheckForRepeatedErrors())
                                 {
-                                    writer.WriteLine("270 Connection closed");
+                                    writer.WriteLine("QUIT");
+                                    client.Close();
                                     gameOver = true;
                                     break;
                                 }
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
+                                gameFlowHelper.Last3Responses.Add(responseFromServer);
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
                                 if (gameStatus.Item1 == "260")
                                 {
                                     Console.WriteLine(responseFromServer);
-                                    writer.WriteLine("270 Connection closed");
+                                    writer.WriteLine("QUIT");
                                 }
                                 if (gameStatus.Item1 == "270" ||gameStatus.Item1 =="260")
                                 {
+                                    writer.WriteLine("QUIT");
                                     gameOver = true;
                                     client.Close();
                                     break;
@@ -139,9 +142,10 @@ namespace BattleShip.Network
                                 writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
+                                gameFlowHelper.Last3Responses.Add(gameStatus.Item1);
                                 if (gameFlowHelper.CheckForRepeatedErrors())
                                 {
-                                    writer.WriteLine("270 Connection closed");
+                                    writer.WriteLine("QUIT");
                                     gameOver = true;
                                     client.Close();
                                     break;

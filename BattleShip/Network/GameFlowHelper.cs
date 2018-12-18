@@ -50,7 +50,7 @@ namespace BattleShip.Network
                     }
                 }
 
-                if (errorCount >= 2 && Last3Responses.Any(x=>x.Contains("quit") || x.Contains("QUIT")))
+                if (errorCount >=3 ||(errorCount >= 2 && Last3Responses.Any(x=>x.Contains("quit") || x.Contains("QUIT"))))
                     return true;
 
 
