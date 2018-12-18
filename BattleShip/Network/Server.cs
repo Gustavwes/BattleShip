@@ -54,7 +54,7 @@ namespace BattleShip.Network
                         Console.WriteLine("Started A Loop on Server");
                         while (!firstCommandFromClientIsHello)
                         {
-                            writer.WriteLine("210 Welcome to BattleShip/1.0");
+                            writer.WriteLine("210 BATTLESHIP/1.0");
                             firstCommand = reader.ReadLine();
                             if (firstCommand.ToLower() == "quit")
                             {
@@ -76,7 +76,7 @@ namespace BattleShip.Network
 
                             var command = reader.ReadLine().ToLower();
                             Console.WriteLine($"Recieved: {command}");
-                            var responseToSend = gameCommandHandler.CommandSorter(command).Item1;
+                            var responseToSend = gameCommandHandler.CommandSorter(command.ToLower()).Item1;
 
                             if (string.Equals(responseToSend.Split(' ')[0], "222", StringComparison.InvariantCultureIgnoreCase))
                             {

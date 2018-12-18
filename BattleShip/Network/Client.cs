@@ -107,7 +107,7 @@ namespace BattleShip.Network
                             {
                                 Console.WriteLine("Waiting for opponent move...");
                                 responseFromServer = reader.ReadLine();
-                                gameStatus = gameCommandHandler.CommandSorter(responseFromServer);
+                                gameStatus = gameCommandHandler.CommandSorter(responseFromServer.ToLower());
                                 //here we need gamestatus to know if their turn is over or if we need to continue our turn (loop around this)
                                 writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);

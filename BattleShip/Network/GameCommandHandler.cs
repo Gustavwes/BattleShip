@@ -28,11 +28,11 @@ namespace BattleShip.Network
                 return (returnString, true);
             }
 
-            if (command.Split(' ')[0] == "fire")
+            if (command.Split(' ')[0].ToLower() == "fire")
             {
                 try
                 {
-                    var coordinates = command.Split(' ')[1];
+                    var coordinates = command.Split(' ')[1].ToLower();
                     var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
                         game.player1, false, false);
 
@@ -89,7 +89,7 @@ namespace BattleShip.Network
                     gameStatus.Item2 = true;
                 }
 
-                if (statusCode == 500)
+                if (statusCode == 500 || statusCode == 501)
                     gameStatus.Item2 = true;
             }
 
