@@ -36,7 +36,8 @@ namespace BattleShip.Network
             var responseFromClient = "";
             var gameFlowHelper = new GameFlowHelper();
             var gameStatus = ("", true);
-            while (true)
+            var gameOver = false;
+            while (!gameOver)
             {
                 Console.WriteLine("Waiting for player to connect...");
 
@@ -47,6 +48,7 @@ namespace BattleShip.Network
                 {
                     if (gameStatus.Item1 == "270")
                     {
+                        gameOver = true;
                         client.GetStream().Close();
                         networkStream.Close();
                         break;
@@ -66,6 +68,7 @@ namespace BattleShip.Network
                             {
                                 firstCommand = "270 Connection closed";
                                 writer.WriteLine(firstCommand);
+                                gameOver = true;
                                 break;
                             }
                             if (!firstCommand.ToLower().Contains("hello") && !firstCommand.ToLower().Contains("helo"))
@@ -116,6 +119,7 @@ namespace BattleShip.Network
                             if (gameFlowHelper.CheckForRepeatedErrors())
                             {
                                 writer.WriteLine("270 Connection closed");
+                                gameOver = true;
                                 networkStream.Close();
                             }
                             gameStatus = gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
@@ -148,6 +152,7 @@ namespace BattleShip.Network
                             if (gameFlowHelper.CheckForRepeatedErrors())
                             {
                                 writer.WriteLine("270 Connection closed");
+                                gameOver = true;
                                 networkStream.Close();
                                 break;
                             }
@@ -157,6 +162,7 @@ namespace BattleShip.Network
                         if (string.Equals(myCommand, "QUIT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             writer.WriteLine("270 BYE BYE");
+                            gameOver = true;
                             break;
                         }
 
@@ -164,9 +170,10 @@ namespace BattleShip.Network
                         gameFlowHelper.PrintLast3Responses();
 
                     }
+                    gameOver = true;
                     break;
                 }
-
+                gameOver = true;
                 break;
             }
 

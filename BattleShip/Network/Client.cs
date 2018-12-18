@@ -27,7 +27,8 @@ namespace BattleShip.Network
             var gameStatus = ("", true);
             StartListen(portNumber);
             var gameFlowHelper = new GameFlowHelper();
-            while (true)
+            var gameOver = false;
+            while (!gameOver)
             {
                 Console.WriteLine("Waiting to connect");
                 var myTurn = false;
@@ -44,6 +45,7 @@ namespace BattleShip.Network
                 {
                     if (gameStatus.Item1 == "270")
                     {
+                        gameOver = true;
                         client.GetStream().Close();
                         networkStream.Close();
                         break;
@@ -72,6 +74,7 @@ namespace BattleShip.Network
                                 if (startCommand.ToUpper() == "QUIT")
                                 {
                                     startCommand = "270 Connection closed";
+                                    gameOver = true;
                                     writer.WriteLine(startCommand);
                                     break;
                                 }
@@ -106,6 +109,7 @@ namespace BattleShip.Network
                                 if (gameFlowHelper.CheckForRepeatedErrors())
                                 {
                                     writer.WriteLine("270 Connection closed");
+                                    gameOver = true;
                                     networkStream.Close();
                                 }
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
@@ -113,6 +117,7 @@ namespace BattleShip.Network
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
                                 if (gameStatus.Item1 == "270")
                                 {
+                                    gameOver = true;
                                     break;
                                 }
                                 //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
@@ -131,6 +136,7 @@ namespace BattleShip.Network
                                 if (gameFlowHelper.CheckForRepeatedErrors())
                                 {
                                     writer.WriteLine("270 Connection closed");
+                                    gameOver = true;
                                     networkStream.Close();
                                     break;
                                 }
@@ -142,9 +148,9 @@ namespace BattleShip.Network
                             gameFlowHelper.PrintLast3Responses();
 
                         } while (networkStream.DataAvailable);
-
+                        gameOver = true;
                     }
-
+                    gameOver = true;
                     break;
 
                 }
