@@ -115,6 +115,7 @@ namespace BattleShip.Network
                                 {
                                     writer.WriteLine("270 Connection closed");
                                     networkStream.Close();
+                                    break;
                                 }
                                 if (gameStatus.Item2)
                                     gameFlowHelper.StillMyTurn = true;
