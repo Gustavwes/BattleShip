@@ -31,12 +31,10 @@ namespace BattleShip.Network
             while (!gameOver)
             {
                 Console.WriteLine("Waiting to connect");
-                var myTurn = false;
-                var hostUsername = "";
-                var responseToServer = "";
-                var myCommand = "";
-                var myResponse = "";
-                var responseFromServer = "";
+                //var myTurn = false;
+                //var hostUsername = "";
+                //var responseToServer = "";
+                //var myResponse = "";
 
                 using (var client = new TcpClient(hostAddress, portNumber))
                 using (var networkStream = client.GetStream())
@@ -54,6 +52,7 @@ namespace BattleShip.Network
                     var firstReplyIsCorrect = false;
                     while (client.Connected)
                     {
+                        var responseFromServer = "";
                         while (!firstReplyIsCorrect)
                         {
                             var firstReply = "";
@@ -102,7 +101,7 @@ namespace BattleShip.Network
                             if (gameFlowHelper.StillMyTurn)
                             {
                                 Console.WriteLine("Your turn, enter command:");
-                                myCommand = Console.ReadLine();
+                                var myCommand = Console.ReadLine();
                                 writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
                                 gameFlowHelper.Last3Responses.Add(responseFromServer); //add last response

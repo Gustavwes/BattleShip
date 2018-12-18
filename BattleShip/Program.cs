@@ -8,7 +8,7 @@ namespace BattleShip
 {
     class Program
     {
-        static TcpListener listener;
+        //static TcpListener listener;
 
         static void Main(string[] args)
         {

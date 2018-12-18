@@ -32,7 +32,7 @@ namespace BattleShip.Network
             var game = GameRunner.Instance();
             var gameCommandHandler = new GameCommandHandler();
             StartListen(port);
-            var myTurn = false;
+            //var myTurn = false;
             var responseFromClient = "";
             var gameFlowHelper = new GameFlowHelper();
             var gameStatus = ("", true);
@@ -171,8 +171,8 @@ namespace BattleShip.Network
                     client.Dispose();
                     break;
                 }
-                gameOver = true;
-                break;
+                //gameOver = true;
+                //break;
             }
 
         }
