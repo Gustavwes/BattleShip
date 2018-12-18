@@ -24,6 +24,7 @@ namespace BattleShip.Network
 
             var gameCommandHandler = new GameCommandHandler();
             var game = GameRunner.Instance();
+            var gameStatus = ("", true);
             StartListen(portNumber);
             var gameFlowHelper = new GameFlowHelper();
             while (true)
@@ -35,12 +36,18 @@ namespace BattleShip.Network
                 var myCommand = "";
                 var myResponse = "";
                 var responseFromServer = "";
+
                 using (var client = new TcpClient(hostAddress, portNumber))
                 using (var networkStream = client.GetStream())
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
-
+                    if (gameStatus.Item1 == "270")
+                    {
+                        client.GetStream().Close();
+                        networkStream.Close();
+                        break;
+                    }
                     Console.WriteLine("Started A Loop on Client");
                     var firstReplyIsCorrect = false;
                     while (client.Connected)
@@ -85,7 +92,7 @@ namespace BattleShip.Network
                             Console.WriteLine(responseFromServer);
                         }
 
-                        var gameStatus = ("", true);
+                        
                         // Läs minst en rad test
                         do
                         {

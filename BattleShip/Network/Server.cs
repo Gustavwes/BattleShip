@@ -45,6 +45,12 @@ namespace BattleShip.Network
                 using (StreamReader reader = new StreamReader(networkStream, Encoding.UTF8))
                 using (var writer = new StreamWriter(networkStream, Encoding.UTF8) { AutoFlush = true })
                 {
+                    if (gameStatus.Item1 == "270")
+                    {
+                        client.GetStream().Close();
+                        networkStream.Close();
+                        break;
+                    }
                     var firstCommandFromClientIsHello = false;
                     var clientUserName = "";
                     var firstCommand = "";
