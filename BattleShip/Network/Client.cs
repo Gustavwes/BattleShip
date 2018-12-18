@@ -146,6 +146,13 @@ namespace BattleShip.Network
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
                                 gameFlowHelper.Last3Responses.Add(gameStatus.Item1);
+                                if (gameStatus.Item1.Contains("260"))
+                                {
+                                    writer.WriteLine("QUIT");
+                                    gameOver = true;
+                                    client.Close();
+                                    break;
+                                }
                                 if (gameFlowHelper.CheckForRepeatedErrors())
                                 {
                                     writer.WriteLine("QUIT");
