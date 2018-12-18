@@ -120,7 +120,7 @@ namespace BattleShip.Network
                             {
                                 writer.WriteLine("270 Connection closed");
                                 gameOver = true;
-                                networkStream.Close();
+                                break;
                             }
                             gameStatus = gameCommandHandler.ResponseSorter(responseFromClient, myCommand);
                             if (gameStatus.Item1 == "270")

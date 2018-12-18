@@ -110,13 +110,14 @@ namespace BattleShip.Network
                                 {
                                     writer.WriteLine("270 Connection closed");
                                     gameOver = true;
-                                    networkStream.Close();
+                                    break;
                                 }
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
-                                if (gameStatus.Item1 == "270")
+                                if (gameStatus.Item1 == "270" ||gameStatus.Item1 =="260")
                                 {
+                                    writer.WriteLine("270 Connection closed");
                                     gameOver = true;
                                     break;
                                 }
@@ -149,6 +150,7 @@ namespace BattleShip.Network
 
                         } while (networkStream.DataAvailable);
                         gameOver = true;
+                        client.Dispose();
                     }
                     gameOver = true;
                     break;
