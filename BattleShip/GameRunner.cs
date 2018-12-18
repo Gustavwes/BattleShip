@@ -27,11 +27,11 @@ namespace BattleShip
             player1.PlayerName = playerName;
             player1.GameBoard = new GameBoard();
             player1.GameBoard.GenerateGameBoard();
-            //player1.ShipList = player1.GenerateShipsForPlayer();
+            player1.ShipList = player1.GenerateShipsForPlayer();
 
             //Tests
-            player1.ShipList = new List<Ship>();
-            player1.ShipList.Add(new Ship("skitskepp", 1, ""));
+            //player1.ShipList = new List<Ship>();
+            //player1.ShipList.Add(new Ship("skitskepp", 1, ""));
 
             player1.GameBoard.PrintCurrentBoardState(player1);
             Console.WriteLine();
