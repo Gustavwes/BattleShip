@@ -33,12 +33,13 @@ namespace BattleShip.Network
                 return (returnString, true);
             }
 
+            var fireCoordinates = GetPositionFromFireCommand(command);
             if (command.Split(' ')[0].ToLower() == "fire")
             {
                 try
                 {
                     var coordinates = command.Split(' ')[1].ToLower();
-                    var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                    var hitMessage = playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
                         game.player1, false, false);
 
                     if (game.player1.CheckIfAllShipsSunk())
@@ -74,22 +75,24 @@ namespace BattleShip.Network
             }
             var gameStatus = ($"Your turn {game.player2.PlayerName}", true);
             // TODO: to implement updating of opponent board
+
+            var fireCoordinates = GetPositionFromFireCommand(coordinates);
             if (int.TryParse(commandStatusCode, out int statusCode))
             {
 
                 if (statusCode == 230)
                 {
-                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                    playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
                         game.player2, false, false);
                 }
                 if (statusCode > 240 && statusCode < 250)
                 {
-                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                    playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
                          game.player2, true, false);
                 }
                 if (statusCode > 250 && statusCode < 260)
                 {
-                    playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                    playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
                         game.player2, true, true);
                 }
 
@@ -107,6 +110,14 @@ namespace BattleShip.Network
 
         }
 
+        public (string character, int number) GetPositionFromFireCommand(string command)
+        {
+            var parts = command.Split(' ');
+            var character = parts[1][0].ToString();
+            var number = int.Parse(parts[1].Substring(1));
+
+            return (character, number);
+        }
 
         public string StartGame(string myUserName, string otherPlayerUsername)
         {
