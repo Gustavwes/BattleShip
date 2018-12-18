@@ -11,43 +11,46 @@ namespace BattleShip.Network
     {
 
         //bool not removed
-        public (string,bool) CommandSorter(string command)
+        public (string, bool) CommandSorter(string command)
         {
 
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
-
+            if (command == "help")
+            {
+                var returnString = "Fire <coordinates> <message> \nQuit\n";
+                return (returnString, false);
+            }
             if (command == "start")
             {
                 var returnString = StartGame(game.player1.PlayerName, game.player2.PlayerName);
-                return (returnString,true);
+                return (returnString, true);
             }
 
             if (command.Split(' ')[0] == "fire")
             {
                 try
                 {
-                var coordinates = command.Split(' ')[1];
-                var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
-                    game.player1, false, false);
+                    var coordinates = command.Split(' ')[1];
+                    var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
+                        game.player1, false, false);
 
-                if (game.player1.CheckIfAllShipsSunk())
-                {
-                    hitMessage.Item2 = "260 You Win!";
-                }
+                    if (game.player1.CheckIfAllShipsSunk())
+                    {
+                        hitMessage.Item2 = "260 You Win!";
+                    }
 
-                return (hitMessage.Item2, hitMessage.Item1);
+                    return (hitMessage.Item2, hitMessage.Item1);
 
                 }
                 catch (Exception e)
                 {
                     return ("500 Syntax error", false);
                 }
-                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
 
             }
-            return ("500 Syntax error",false);
+            return ("500 Syntax error", false);
         }
 
         public (string, bool) ResponseSorter(string response, string coordinates)
@@ -86,11 +89,6 @@ namespace BattleShip.Network
                 if (statusCode == 500)
                     gameStatus.Item2 = true;
             }
-            else
-            {
-                
-            }
-
 
             return gameStatus;
 
@@ -101,27 +99,8 @@ namespace BattleShip.Network
         {
             var random = new Random();
             var randomResult = random.Next(1, 10);
-            if (randomResult > 5)
-                return $"221 You, {otherPlayerUsername} will start";
-            else
-            {
-                return $"222 The other player, {myUserName} will start.";
-            }
-        }
-        public void ReceiveHitMessage()
-        {
-            //Send back Hit/miss/sunk/win
+            return randomResult > 5 ? $"221 You, {otherPlayerUsername} will start" : $"222 The other player, {myUserName} will start.";
         }
 
-        public void SendHitMessage()
-        {
-
-        }
-
-        public void FromHostReplySplitter(string recievedData)
-        {
-            var statusCode = recievedData.Take(3);
-            var restOfString = recievedData.Skip(3);
-        }
     }
 }
