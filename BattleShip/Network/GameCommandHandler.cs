@@ -19,7 +19,7 @@ namespace BattleShip.Network
             var commandStatusCode = command.Split(' ')[0];
             if (command == "help")
             {
-                var returnString = "Fire <coordinates> <message> \nQuit\n";
+                var returnString = "Available commands : 1. Fire <coordinates> <message> 2. Quit";
                 return (returnString, false);
             }
             if (command == "start")
