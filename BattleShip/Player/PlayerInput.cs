@@ -52,7 +52,7 @@ namespace BattleShip.Player
             var game = GameRunner.Instance();
             if (selectedSquare.Hit)
             {
-                return (true, "501 Already Hit");
+                return (false, "501 Already Hit");
             }
             if (responseHit)
             {
