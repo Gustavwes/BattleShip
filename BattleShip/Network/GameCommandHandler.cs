@@ -58,7 +58,10 @@ namespace BattleShip.Network
             var game = GameRunner.Instance();
             var playerInput = new PlayerInput();
             var commandStatusCode = response.Split(' ')[0];
-            coordinates = coordinates.Split(' ')[1];
+            if (coordinates.Split(' ').Length > 1)
+            {
+                coordinates = coordinates.Split(' ')[1];
+            }
             var gameStatus = ($"Your turn {game.player2.PlayerName}", false);
             // TODO: to implement updating of opponent board
             if (int.TryParse(commandStatusCode, out int statusCode))
