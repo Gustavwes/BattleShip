@@ -46,6 +46,11 @@ namespace BattleShip.Player
         //}
         public (bool, string) ReceiveHit(string xAxis, int yAxis, Player player, bool responseHit, bool isSunk)
         {
+            var letterAligner = new List<(int, string)>() { (1, "a"), (2, "b"), (3, "c"), (4, "d"), (5, "e"), (6, "f"), (7, "g"), (8, "h"), (9, "i"), (10, "j") };
+            if (letterAligner.All(x => x.Item2 != xAxis) || !int.TryParse(Console.ReadLine(), out int inputYAxis))
+            {
+                return (false, "500 Bad input");
+            }
             var hitShip = (true, "miss");
             var selectedSquare = player.GameBoard.GetSquare(xAxis.ToLower(), yAxis, player);
             var shipOnSquare = selectedSquare.GetShipOnSquare(player);
