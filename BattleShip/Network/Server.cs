@@ -162,6 +162,7 @@ namespace BattleShip.Network
                         if (string.Equals(myCommand, "QUIT", StringComparison.InvariantCultureIgnoreCase))
                         {
                             writer.WriteLine("270 BYE BYE");
+                            client.Dispose();
                             gameOver = true;
                             break;
                         }
@@ -171,6 +172,7 @@ namespace BattleShip.Network
 
                     }
                     gameOver = true;
+                    client.Dispose();
                     break;
                 }
                 gameOver = true;
