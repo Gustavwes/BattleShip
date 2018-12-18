@@ -20,7 +20,8 @@ namespace BattleShip.Network
 
             if (command == "start")
             {
-                return (StartGame(game.player1.PlayerName, game.player2.PlayerName), true);
+                var returnString = StartGame(game.player1.PlayerName, game.player2.PlayerName);
+                return (returnString,true);
             }
 
             if (command.Split(' ')[0] == "fire")
