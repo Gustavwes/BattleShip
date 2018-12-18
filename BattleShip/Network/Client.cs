@@ -111,6 +111,11 @@ namespace BattleShip.Network
                                 writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
+                                if (gameFlowHelper.CheckForRepeatedErrors())
+                                {
+                                    writer.WriteLine("270 Connection closed");
+                                    networkStream.Close();
+                                }
                                 if (gameStatus.Item2)
                                     gameFlowHelper.StillMyTurn = true;
 
