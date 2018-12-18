@@ -17,6 +17,11 @@ namespace BattleShip.Network
             var playerInput = new PlayerInput();
             var game = GameRunner.Instance();
             var commandStatusCode = command.Split(' ')[0];
+            if (command == "quit")
+            {
+                var returnString = "270 Bye Bye";
+                return (returnString, false);
+            }
             if (command == "help")
             {
                 var returnString = "Available commands : 1. Fire <coordinates> <message> 2. Quit";

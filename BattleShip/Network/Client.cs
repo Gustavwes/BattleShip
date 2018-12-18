@@ -60,13 +60,19 @@ namespace BattleShip.Network
                                 game.player2.PlayerName = firstReply.Split(' ')[1];
                                 firstReplyIsCorrect = true;
                                 Console.WriteLine("Enter Start to start: ");
-                                var command = Console.ReadLine();
+                                var startCommand = Console.ReadLine();
 
-                                if (command == "QUIT") break;
+                                if (startCommand.ToUpper() == "QUIT")
+                                {
+                                    startCommand = "270 Connection closed";
+                                    writer.WriteLine(startCommand);
+                                    break;
+                                }
 
                                 // Skicka text
-                                writer.WriteLine(command);
+                                writer.WriteLine(startCommand);
                             }
+                            
                             if (!client.Connected) break;
 
                             responseFromServer = reader.ReadLine();
@@ -128,6 +134,8 @@ namespace BattleShip.Network
                         } while (networkStream.DataAvailable);
 
                     }
+
+                    break;
 
                 }
 

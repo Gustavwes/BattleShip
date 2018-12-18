@@ -56,9 +56,10 @@ namespace BattleShip.Network
                         {
                             writer.WriteLine("210 BATTLESHIP/1.0");
                             firstCommand = reader.ReadLine();
-                            if (firstCommand.ToLower() == "quit")
+                            if (firstCommand.ToUpper() == "QUIT")
                             {
-                                writer.WriteLine("270 Hasta la vista");
+                                firstCommand = "270 Connection closed";
+                                writer.WriteLine(firstCommand);
                                 break;
                             }
                             if (!firstCommand.ToLower().Contains("hello") && !firstCommand.ToLower().Contains("helo"))
@@ -131,7 +132,7 @@ namespace BattleShip.Network
                             gameStatus = gameCommandHandler.CommandSorter(responseFromClient);
                             //here we need gamestatus to know if their turn is over or if we need to continue our turn (loop around this)
                             writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
-                           
+
                             gameFlowHelper.ResponsesAndCommands.Add(responseFromClient);
                             gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
                             if (gameFlowHelper.CheckForRepeatedErrors())
@@ -143,9 +144,9 @@ namespace BattleShip.Network
                             if (gameStatus.Item2)
                                 gameFlowHelper.StillMyTurn = true;
                         }
-                        if (string.Equals(myCommand, "EXIT", StringComparison.InvariantCultureIgnoreCase))
+                        if (string.Equals(myCommand, "QUIT", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            writer.WriteLine("BYE BYE");
+                            writer.WriteLine("270 BYE BYE");
                             break;
                         }
 
@@ -153,8 +154,10 @@ namespace BattleShip.Network
                         gameFlowHelper.PrintLast3Responses();
 
                     }
+                    break;
                 }
 
+                break;
             }
 
         }
