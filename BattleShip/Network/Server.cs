@@ -149,6 +149,13 @@ namespace BattleShip.Network
 
                             gameFlowHelper.ResponsesAndCommands.Add(responseFromClient);
                             gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
+                            if (gameStatus.Item1.Contains("270"))
+                            {
+                                writer.WriteLine("270 BYE BYE");
+                                client.Dispose();
+                                gameOver = true;
+                                break;
+                            }
                             if (gameFlowHelper.CheckForRepeatedErrors())
                             {
                                 writer.WriteLine("270 Connection closed");
@@ -159,13 +166,13 @@ namespace BattleShip.Network
                             if (gameStatus.Item2)
                                 gameFlowHelper.StillMyTurn = true;
                         }
-                        if (string.Equals(myCommand, "QUIT", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            writer.WriteLine("270 BYE BYE");
-                            client.Dispose();
-                            gameOver = true;
-                            break;
-                        }
+                        //if (string.Equals(myCommand, "QUIT", StringComparison.InvariantCultureIgnoreCase))
+                        //{
+                        //    writer.WriteLine("270 BYE BYE");
+                        //    client.Dispose();
+                        //    gameOver = true;
+                        //    break;
+                        //}
 
                         game.PrintBothGameBoards();
                         gameFlowHelper.PrintLast3Responses();

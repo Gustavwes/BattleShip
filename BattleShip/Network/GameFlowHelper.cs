@@ -17,7 +17,6 @@ namespace BattleShip.Network
             ResponsesAndCommands = new List<string>();
         }
 
-
         public void PrintLast3Responses()
         {
             if (ResponsesAndCommands.Count > 3)
@@ -31,10 +30,11 @@ namespace BattleShip.Network
 
             }
         }
+
         public bool CheckForRepeatedErrors()
         {
             var errorCount = 0;
-            if (Last3Responses.Count > 3)
+            if (Last3Responses.Count >= 3)
             {
                 Last3Responses = Last3Responses.Skip(Math.Max(0, Last3Responses.Count() - 3)).ToList();
 
@@ -48,10 +48,9 @@ namespace BattleShip.Network
                             errorCount++;
                         }
                     }
-
                 }
 
-                if (errorCount >= 3)
+                if (errorCount >= 2 && Last3Responses.Any(x=>x.Contains("quit") || x.Contains("QUIT")))
                     return true;
 
 

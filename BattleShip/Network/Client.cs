@@ -115,10 +115,15 @@ namespace BattleShip.Network
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);
+                                if (gameStatus.Item1 == "260")
+                                {
+                                    Console.WriteLine(responseFromServer);
+                                    writer.WriteLine("270 Connection closed");
+                                }
                                 if (gameStatus.Item1 == "270" ||gameStatus.Item1 =="260")
                                 {
-                                    writer.WriteLine("270 Connection closed");
                                     gameOver = true;
+                                    client.Close();
                                     break;
                                 }
                                 //writer.WriteLine(myResponse); //need checks to see if turn is over or need to wait for next server turn (e.g. faulty input)
@@ -138,7 +143,7 @@ namespace BattleShip.Network
                                 {
                                     writer.WriteLine("270 Connection closed");
                                     gameOver = true;
-                                    networkStream.Close();
+                                    client.Close();
                                     break;
                                 }
                                 if (gameStatus.Item2)
@@ -149,8 +154,8 @@ namespace BattleShip.Network
                             gameFlowHelper.PrintLast3Responses();
 
                         } while (networkStream.DataAvailable);
-                        gameOver = true;
-                        client.Dispose();
+                        //gameOver = true;
+                        //client.Dispose();
                     }
                     gameOver = true;
                     break;
