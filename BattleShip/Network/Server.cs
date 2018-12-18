@@ -146,10 +146,17 @@ namespace BattleShip.Network
                             gameStatus = gameCommandHandler.CommandSorter(responseFromClient.ToLower());
                             //here we need gamestatus to know if their turn is over or if we need to continue our turn (loop around this)
                             writer.WriteLine(gameStatus.Item1); //need checks to see if their turn is over or need to wait for next server turn (e.g. faulty input)
-
+                            gameFlowHelper.Last3Responses.Add(responseFromClient);
                             gameFlowHelper.ResponsesAndCommands.Add(responseFromClient);
                             gameFlowHelper.ResponsesAndCommands.Add(gameStatus.Item1);
                             if (gameStatus.Item1.Contains("270"))
+                            {
+                                writer.WriteLine("270 BYE BYE");
+                                client.Dispose();
+                                gameOver = true;
+                                break;
+                            }
+                            if (gameStatus.Item1.Contains("260"))
                             {
                                 writer.WriteLine("270 BYE BYE");
                                 client.Dispose();
