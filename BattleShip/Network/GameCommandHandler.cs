@@ -79,7 +79,7 @@ namespace BattleShip.Network
 
                 if (int.TryParse(commandStatusCode, out int statusCode))
                 {
-                    var fireCoordinates = GetPositionFromFireCommand(coordinates);
+                    var fireCoordinates = GetPositionFromFireCommand("fire " + coordinates);
                     if (statusCode == 230)
                     {
                         playerInput.ReceiveHit(fireCoordinates.character, fireCoordinates.number,
