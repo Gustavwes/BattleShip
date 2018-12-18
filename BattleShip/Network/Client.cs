@@ -90,7 +90,11 @@ namespace BattleShip.Network
                                 writer.WriteLine(myCommand);
                                 responseFromServer = reader.ReadLine();
                                 gameFlowHelper.Last3Responses.Add(responseFromServer); //add last response
-                                gameFlowHelper.CheckForRepeatedErrors();
+                                if (gameFlowHelper.CheckForRepeatedErrors())
+                                {
+                                    writer.WriteLine("270 Connection closed");
+                                    networkStream.Close();
+                                }
                                 gameFlowHelper.ResponsesAndCommands.Add(myCommand);
                                 gameFlowHelper.ResponsesAndCommands.Add(responseFromServer);
                                 gameStatus = gameCommandHandler.ResponseSorter(responseFromServer, myCommand);

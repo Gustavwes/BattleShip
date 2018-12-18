@@ -26,7 +26,8 @@ namespace BattleShip.Network
 
             if (command.Split(' ')[0] == "fire")
             {
-                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
+                try
+                {
                 var coordinates = command.Split(' ')[1];
                 var hitMessage = playerInput.ReceiveHit(coordinates.Substring(0, 1), int.Parse(coordinates.Substring(1, 1)),
                     game.player1, false, false);
@@ -37,6 +38,13 @@ namespace BattleShip.Network
                 }
 
                 return (hitMessage.Item2, hitMessage.Item1);
+
+                }
+                catch (Exception e)
+                {
+                    return ("500 Syntax error", false);
+                }
+                // Regex rx = new Regex("^FIRE [A-H]([1-9]|10)([ ]|$)");
 
             }
             return ("500 Syntax error",false);
