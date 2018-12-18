@@ -80,10 +80,9 @@ namespace BattleShip.Network
 
                 if (int.TryParse(commandStatusCode, out int statusCode))
                 {
-                    Tuple<string, int> fireCoordinates;
                     try
                     {
-                        fireCoordinates = GetPositionFromFireCommand("fire " + coordinates);
+                        var fireCoordinates = GetPositionFromFireCommand("fire " + coordinates);
 
                         if (statusCode == 230)
                         {
