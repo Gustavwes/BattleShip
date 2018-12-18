@@ -38,7 +38,7 @@ namespace BattleShip.Network
 
                     if (game.player1.CheckIfAllShipsSunk())
                     {
-                        hitMessage.Item2 = "260 You Win!";
+                        hitMessage.Item2 = $"260 {game.player2.PlayerName} wins!";
                     }
 
                     return (hitMessage.Item2, hitMessage.Item1);

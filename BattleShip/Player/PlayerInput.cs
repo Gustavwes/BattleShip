@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using BattleShip.Game_Board;
+using BattleShip.Network;
 
 namespace BattleShip.Player
 {
@@ -48,7 +49,7 @@ namespace BattleShip.Player
             var hitShip = (true, "miss");
             var selectedSquare = player.GameBoard.GetSquare(xAxis, yAxis, player);
             var shipOnSquare = selectedSquare.GetShipOnSquare(player);
-
+            var game = GameRunner.Instance();
             if (responseHit)
             {
                 //These fakeships could possibly be named after the response we get back from the server/client.... we do get the name, and 
@@ -83,19 +84,19 @@ namespace BattleShip.Player
                     switch (shipOnSquare.ShipName)
                     {
                         case "Carrier":
-                            hitShip = (true, "251 You sunk my Carrier");
+                            hitShip = (true, $"251 {game.player2.PlayerName} sunk {game.player1.PlayerName}'s Carrier");
                             break;
                         case "Battleship":
-                            hitShip = (true, "252 You sunk my Battleship");
+                            hitShip = (true, $"252 {game.player2.PlayerName} sunk {game.player1.PlayerName}'s Battleship");
                             break;
                         case "Destroyer":
-                            hitShip = (true, "253 You sunk my Destroyer");
+                            hitShip = (true, $"253 {game.player2.PlayerName} sunk {game.player1.PlayerName}'s Destroyer");
                             break;
                         case "Submarine":
-                            hitShip = (true, "254 You sunk my Submarine");
+                            hitShip = (true, $"254 {game.player2.PlayerName} sunk {game.player1.PlayerName}'s Submarine");
                             break;
                         case "Patrol Boat":
-                            hitShip = (true, "255 You sunk my Patrol Boat");
+                            hitShip = (true, $"255 {game.player2.PlayerName} sunk {game.player1.PlayerName}'s Patrol Boat");
                             break;
                         default:
                             hitShip = (true, "Something went wrong, couldn't find boat");
@@ -107,19 +108,19 @@ namespace BattleShip.Player
                 switch (shipOnSquare.ShipName)
                 {
                     case "Carrier":
-                        hitShip = (true, "241 You hit my Carrier");
+                        hitShip = (true, $"241 {game.player2.PlayerName} hit {game.player1.PlayerName}'s Carrier");
                         break;
                     case "Battleship":
-                        hitShip = (true, "242 You hit my Battleship");
+                        hitShip = (true, $"242 {game.player2.PlayerName} hit {game.player1.PlayerName}'s Battleship");
                         break;
                     case "Destroyer":
-                        hitShip = (true, "243 You hit my Destroyer");
+                        hitShip = (true, $"243 {game.player2.PlayerName} hit {game.player1.PlayerName}'s Destroyer");
                         break;
                     case "Submarine":
-                        hitShip = (true, "244 You hit my Submarine");
+                        hitShip = (true, $"244 {game.player2.PlayerName} hit {game.player1.PlayerName}'s Submarine");
                         break;
                     case "Patrol Boat":
-                        hitShip = (true, "245 You hit my Patrol Boat");
+                        hitShip = (true, $"245 {game.player2.PlayerName} hit {game.player1.PlayerName}'s Patrol Boat");
                         break;
                     default:
                         hitShip = (true, "Something went wrong, couldn't find boat");
