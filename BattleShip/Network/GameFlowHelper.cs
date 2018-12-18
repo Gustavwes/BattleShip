@@ -14,6 +14,7 @@ namespace BattleShip.Network
         public GameFlowHelper()
         {
             Last3Responses = new List<string>();
+            ResponsesAndCommands = new List<string>();
         }
 
 
