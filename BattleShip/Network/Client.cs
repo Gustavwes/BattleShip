@@ -121,8 +121,11 @@ namespace BattleShip.Network
                                 {
                                     Console.WriteLine(responseFromServer);
                                     writer.WriteLine("QUIT");
+                                    gameOver = true;
+                                    client.Close();
+                                    break;
                                 }
-                                if (gameStatus.Item1 == "270" ||gameStatus.Item1 =="260")
+                                if (gameStatus.Item1 == "270")
                                 {
                                     writer.WriteLine("QUIT");
                                     gameOver = true;

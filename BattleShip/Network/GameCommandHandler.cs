@@ -63,8 +63,10 @@ namespace BattleShip.Network
             var game = GameRunner.Instance();
             var playerInput = new PlayerInput();
             var commandStatusCode = response.Split(' ')[0];
-            if (commandStatusCode == "270" || commandStatusCode =="260")
-                return ("270",false);
+            if (commandStatusCode == "270")
+                return ("270", false);
+            if (commandStatusCode == "260")
+                return ("270", false);
 
             if (coordinates.Split(' ').Length > 1)
             {
